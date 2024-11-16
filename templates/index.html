@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSA Encryption</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f9;
+      }
+      
+      .container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
+      }
+      
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      
+      .form-group {
+        margin-bottom: 15px;
+      }
+      
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+      }
+      
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 1rem;
+      }
+      
+      .submit-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .submit-btn:hover {
+        background-color: #0056b3;
+      }
+      
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        color: #333;
+      }
+      
+      .result-item {
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>RSA Parameters Input</h2>
+      <form id="rsaForm">
+        <div class="form-group">
+          <label for="p">Prime number p:</label>
+          <input type="number" id="p" name="p" required />
+        </div>
+        <div class="form-group">
+          <label for="q">Prime number q:</label>
+          <input type="number" id="q" name="q" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <input type="text" id="message" name="message" required />
+        </div>
+        <button type="button" class="submit-btn" onclick="generateKeys()">
+          Generate Keys & Encrypt
+        </button>
+      </form>
+
+      <div class="result" id="result">
+        <div id="result-n"></div>
+        <div id="result-phi"></div>
+        <div id="result-public_key"></div>
+        <div id="result-private_key"></div>
+        <div id="result-encrypted"></div>
+        <div id="result-decrypted"></div>
+      </div>
+    </div>
+
+    <script>
+      async function generateKeys() {
+        const p = document.getElementById("p").value;
+        const q = document.getElementById("q").value;
+        const message = document.getElementById("message").value;
+
+        // Gửi request để tạo khóa RSA
+        const response = await fetch("/generate_keys", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ p, q }),
+        });
+        const keys = await response.json();
+
+        document.getElementById("result-n").textContent = `n = ${keys.n}`;
+        document.getElementById(
+          "result-phi"
+        ).textContent = `phi(n) = ${keys.phi_n}`;
+        document.getElementById("result-public_key").textContent = `public_key = ${keys.public_key}`;
+        document.getElementById("result-private_key").textContent = `private_key = ${keys.private_key}`;
+
+        // Gửi request để mã hóa thông điệp
+        const encryptedResponse = await fetch("/encrypt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message,
+            public_key: keys.public_key,
+          }),
+        });
+        const encryptedData = await encryptedResponse.json();
+        document.getElementById(
+          "result-encrypted"
+        ).textContent = `Encrypted message = ${encryptedData.encrypted_message}`;
+
+        // Gửi request để giải mã thông điệp
+        const decryptedResponse = await fetch("/decrypt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            encrypted_message: encryptedData.encrypted_message,
+            private_key: keys.private_key,
+          }),
+        });
+        const decryptedData = await decryptedResponse.json();
+        document.getElementById(
+          "result-decrypted"
+        ).textContent = `Decrypted message = ${decryptedData.decrypted_message}`;
+      }
+    </script>
+  </body>
+</html>
