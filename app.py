@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('rsa_screen.html')
 
 @app.route('/generate_keys', methods=['POST'])
 def generate_keys():
