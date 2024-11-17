@@ -1,0 +1,241 @@
+<!-- homescreen.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSA</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <header>
+    <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+      <div class="container-fluid">
+        <!-- link to homescreen -->
+        <a class="navbar-brand" href="#">
+          <img src="" alt="">
+          INT3230E
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <!-- link to rsa -->
+              <a class="nav-link" href="rsa_screen.html">RSA</a>
+            </li>
+            <li class="nav-item">
+              <!-- link to elgammal -->
+              <a class="nav-link" href="elgammal.html">ElGammal</a>
+            </li>
+            <li class="nav-item">
+              <!-- link to eliptic -->
+              <a class="nav-link" href="elliptic.html">Elliptic</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                Fundamentals
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-5">
+    <div class="container mt-5">
+
+      <div class="row">
+        <div class="col-md-6">
+            <img src="https://cdn.freebiesupply.com/logos/large/2x/rsa-22-logo-png-transparent.png" alt="" class="img-fluid">
+        </div>
+        
+        <div class="col-md-6">
+            <h1>RSA (Rivest - Shamir - Adleman)</h1>
+            <p class="mt-4">
+                RSA is a public-key cryptosystem that is widely used for secure data transmission. It is also one of the oldest. The acronym RSA comes from the surnames of Ron Rivest, Adi Shamir, and Leonard Adleman, who publicly described the algorithm in 1977. An equivalent system was developed secretly, in 1973, by British mathematician Clifford Cocks.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Step 1: Set prime numbers -->
+        <div class="card mt-5">
+          <div class="card-header">
+            <h4>Step 1: Set prime numbers</h4>
+          </div>
+          <div class="card-body">
+            
+            <h5>As a starting point for RSA, choose two prime numbers <i>p</i> and <i>q</i>:</h5>
+          <form>
+              <div class="mb-3 row">
+                  <label for="primeP" class="col-sm-2 col-form-label"><i>p</i> =</label>
+                  <div class="col-sm-10">
+                      <input type="number" class="form-control" id="primeP" placeholder="11" required />
+                  </div>
+              </div>
+              <div class="mb-3 row">
+                  <label for="primeQ" class="col-sm-2 col-form-label"><i>q</i> =</label>
+                  <div class="col-sm-10">
+                      <input type="number" class="form-control" id="primeQ" placeholder="13" required />
+                  </div>
+              </div>
+              <p>For the algorithm to work, the two prime numbers must be different.</p>
+              <div class="d-flex justify-content-begin">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
+
+          </div>
+          <div class="card-footer text-body-secondary">
+            For demonstration, we start with small prime numbers. To make the factorization difficult, the prime numbers must be chosen much larger. For secure communication, values with at least 2048 binary digits are currently used for n.
+          </div>
+        </div>
+
+      <!-- Step 2: Calculate n and φ(n) -->
+        <div class="card mt-5">
+          <div class="card-header">
+            <h4>Step 2: Calculate n and φ(n)</h4>
+          </div>
+          <div class="card-body">
+            <h5>Calculate <i>n</i> and <i>φ(n)</i>:</h5>
+            <p>Calculate <i>n</i> = <i>p</i> * <i>q</i> and <i>φ(n)</i> = (<i>p</i> - 1) * (<i>q</i> - 1).</p>
+            
+            <p><i>n</i> = <span id="n">143</span></p>
+            <p><i>φ(n)</i> = <span id="phi">120</span></p>
+        
+          </div>
+          <div class="card-footer text-body-secondary">
+            The value of <i>n</i> is used as the modulus for both the public and private keys. The value of <i>φ(n)</i> is used to calculate the public key <i>e</i> and the private key <i>d</i>.
+          </div>
+        </div>
+
+      <!-- Step 3: Choose e -->
+      <div class="card mt-5">
+        <div class="card-header">
+          <h4>Step 3: Choose e</h4>
+        </div>
+        <div class="card-body">
+          <h5>Choose <i>e</i>:</h5>
+          <p>Choose <i>e</i> such that 1 < <i>e</i> < <i>φ(n)</i> and <i>e</i> is coprime to <i>φ(n)</i>.</p>
+          <div class="mb-3 row">
+            <label for="e" class="col-sm-2 col-form-label"><i>e</i> =</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="e" placeholder="7" required />
+            </div>
+          </div>
+          <p>Coprime means that two numbers have no common divisor except.</p>
+          <div class="d-flex justify-content-begin">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+        <div class="card-footer text-body-secondary">
+          The value of <i>e</i> is the public key exponent. It is used to encrypt the message.
+        </div>
+        </div>
+
+        <!-- Step 4: Calculate d and display public & private keys -->
+        <div class="card mt-5">
+          <div class="card-header">
+            <h4>Step 4: Initialize private & public keys</h4>
+          </div>
+          <div class="card-body">
+            <h5>Calculate <i>d</i> and display public & private keys:</h5>
+            <p>Calculate <i>d</i> such that <i>d</i> * <i>e</i> ≡ 1 (mod <i>φ(n)</i>).</p>
+
+            <p><i>d</i> can be calculated with the <span class="fw-bold text-success">extended Euclidean algorithm</span>. <br>
+              For the values entered, <i>d</span> can have the following value:
+
+            <p><i>d</i> = <span id="d">103</span></p>
+
+            <hr>
+            <h6 class="fw-bold">&rArr; Resulting keys</h6>
+            <ul>
+              <li><p>Public key: <i>(n, e)</i> = (<span id="n">143</span>, <span id="e">7</span>)</p></li>
+              <li><p>Private key: <i>(n, d)</i> = (<span id="n">143</span>, <span id="d">103</span>)</p></li>
+            </ul>
+          </div>
+        </div>
+      
+        <!-- Step 5: encrypt -->
+        <div class="card mt-5">
+          <div class="card-header">
+            <h4>Step 5: Encrypt</h4>
+          </div>
+          <div class="card-body">
+            <p>To encrypt a number <i>m</i> to ciphertext <i>c</i> the following formula is applied. It uses the numbers of the public key:</p>
+
+            <p><i>c</i> = <i>m<sup>e</sup></i> mod <i>n</i></p>
+
+            <p>RSA encrypts only numbers. These must be greater-equal 0 and less than <i>n</i> = 143.</p>
+
+            <div class="mt-4">
+                <h5>Example:</h5>
+
+                <form>
+                  <div class="mb-3 row">
+                      <label for="m" class="col-sm-2 col-form-label"><i>m</i> =</label>
+                      <div class="col-sm-10">
+                          <input type="number" class="form-control" id="m" placeholder="88" required />
+                      </div>
+                  </div>
+                  
+                  <div class="d-flex justify-content-begin mb-3">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+              </form>
+
+                <p><i>c</i> = 88<sup>7</sup> mod 143</p>
+
+                <p><i>c</i> = 121</p>
+
+                <p>Letters are converted to numbers using an encoding system like <span class="highlight">ASCII</span>.</p>
+                <p>For the entered values this would be: <i>m</i> = <i>x</i> and <i>c</i> = <i>y</i> </p>  </div>
+          </div>
+          </div>
+        
+      
+        <!-- Step 6: Decrypt -->
+        <div class="card my-5">
+          <div class="card-header">
+            <h4>Step 6: Decrypt</h4>
+          </div>
+          <div class="card-body">
+            <p>To decrypt the ciphertext <i>c</i> to the original message <i>m</i> the following formula is applied. It uses the numbers of the private key:</p>
+
+            <p><i>m</i> = <i>c<sup>d</sup></i> mod <i>n</i></p>
+
+            <p>RSA decrypts only numbers. These must be greater-equal 0 and less than <i>n</i> = 143.</p>
+
+            <div class="mt-4">
+                <h5>Example:</h5>
+
+                <p><i>c</i> = <span id="c">121</span></p>
+
+                <hr>
+                <h6 class="fw-bold">&rArr; Decryption</h6>
+
+                <p><i>m</i> = 121<sup>103</sup> mod 143</p>
+
+                <p><i>m</i> = 88</p>
+
+                <p>Numbers are converted to letters using an encoding system like <span class="highlight">ASCII</span>.</p>
+                <p>For the entered values this would be: <i>c</i> = <i>y</i> and <i>m</i> = <i>x</i> </p>  </div>
+          </div>
+          </div>
+
+    
+    </div>
+  </main>
+</body>
+</html>
