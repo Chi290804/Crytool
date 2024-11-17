@@ -77,21 +77,25 @@
           <div class="card-body">
             
             <h5>As a starting point for RSA, choose two prime numbers <i>p</i> and <i>q</i>:</h5>
-          <form>
+          <!-- connect here: id="form_primes_setting" -->
+          <form id="primes_setting">
               <div class="mb-3 row">
                   <label for="primeP" class="col-sm-2 col-form-label"><i>p</i> =</label>
                   <div class="col-sm-10">
-                      <input type="number" class="form-control" id="primeP" placeholder="11" required />
+                    <!-- connect here: id="p" -->
+                      <input type="number" class="form-control" id="p" placeholder="11" required />
                   </div>
               </div>
               <div class="mb-3 row">
                   <label for="primeQ" class="col-sm-2 col-form-label"><i>q</i> =</label>
                   <div class="col-sm-10">
-                      <input type="number" class="form-control" id="primeQ" placeholder="13" required />
+                    <!-- connect here: id="q" -->
+                      <input type="number" class="form-control" id="q" placeholder="13" required />
                   </div>
               </div>
               <p>For the algorithm to work, the two prime numbers must be different.</p>
               <div class="d-flex justify-content-begin">
+                <!-- connect here: handle form submission -->
                   <button type="submit" class="btn btn-primary">Submit</button>
               </div>
           </form>
@@ -111,6 +115,7 @@
             <h5>Calculate <i>n</i> and <i>φ(n)</i>:</h5>
             <p>Calculate <i>n</i> = <i>p</i> * <i>q</i> and <i>φ(n)</i> = (<i>p</i> - 1) * (<i>q</i> - 1).</p>
             
+            <!-- connect here: id="n" and id="phi" -->
             <p><i>n</i> = <span id="n">143</span></p>
             <p><i>φ(n)</i> = <span id="phi">120</span></p>
         
@@ -128,16 +133,21 @@
         <div class="card-body">
           <h5>Choose <i>e</i>:</h5>
           <p>Choose <i>e</i> such that 1 < <i>e</i> < <i>φ(n)</i> and <i>e</i> is coprime to <i>φ(n)</i>.</p>
-          <div class="mb-3 row">
-            <label for="e" class="col-sm-2 col-form-label"><i>e</i> =</label>
-            <div class="col-sm-10">
-              <input type="number" class="form-control" id="e" placeholder="7" required />
-            </div>
-          </div>
-          <p>Coprime means that two numbers have no common divisor except.</p>
-          <div class="d-flex justify-content-begin">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
+          <!-- connect here: id="form_choose_e" -->
+          <form id="choose_e">
+              <div class="mb-3 row">
+                <label for="e" class="col-sm-2 col-form-label"><i>e</i> =</label>
+                <div class="col-sm-10">
+                  <!-- connect here: id="e" -->
+                  <input type="number" class="form-control" id="e" placeholder="7" required />
+                </div>
+              </div>
+              <p>Coprime means that two numbers have no common divisor except.</p>
+              <div class="d-flex justify-content-begin">
+                <!-- connect here: handle form submission -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
         </div>
         <div class="card-footer text-body-secondary">
           The value of <i>e</i> is the public key exponent. It is used to encrypt the message.
@@ -156,11 +166,13 @@
             <p><i>d</i> can be calculated with the <span class="fw-bold text-success">extended Euclidean algorithm</span>. <br>
               For the values entered, <i>d</span> can have the following value:
 
+            <!-- connect here id="d" -->
             <p><i>d</i> = <span id="d">103</span></p>
 
             <hr>
             <h6 class="fw-bold">&rArr; Resulting keys</h6>
             <ul>
+              <!-- connect here: id="n", id="e", id="d" -->
               <li><p>Public key: <i>(n, e)</i> = (<span id="n">143</span>, <span id="e">7</span>)</p></li>
               <li><p>Private key: <i>(n, d)</i> = (<span id="n">143</span>, <span id="d">103</span>)</p></li>
             </ul>
@@ -182,22 +194,28 @@
             <div class="mt-4">
                 <h5>Example:</h5>
 
-                <form>
+                <!-- connect here: id="form_encrypt" -->
+                <form id="form_encrypt">
                   <div class="mb-3 row">
                       <label for="m" class="col-sm-2 col-form-label"><i>m</i> =</label>
                       <div class="col-sm-10">
+                        <!-- connect here: id="m" -->
                           <input type="number" class="form-control" id="m" placeholder="88" required />
                       </div>
                   </div>
                   
                   <div class="d-flex justify-content-begin mb-3">
+                    <!-- connect here: handle form submission -->
                       <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
               </form>
 
-                <p><i>c</i> = 88<sup>7</sup> mod 143</p>
+               
+                <hr>
 
-                <p><i>c</i> = 121</p>
+                <!-- connect here: id="c", id="m", id="e", id="n" -->
+                <p><i>c</i> = <span id="m">88</span><sup><span id="e">7</span></sup> mod <span id="n">143</span></p>
+                <p><i>c</i> = <span id="c">121</span></p>
 
                 <p>Letters are converted to numbers using an encoding system like <span class="highlight">ASCII</span>.</p>
                 <p>For the entered values this would be: <i>m</i> = <i>x</i> and <i>c</i> = <i>y</i> </p>  </div>
@@ -220,14 +238,16 @@
             <div class="mt-4">
                 <h5>Example:</h5>
 
+                <!-- connect here: id="c" -->
                 <p><i>c</i> = <span id="c">121</span></p>
 
                 <hr>
                 <h6 class="fw-bold">&rArr; Decryption</h6>
 
-                <p><i>m</i> = 121<sup>103</sup> mod 143</p>
+                <!-- connect here: id="decrypted", id="c", id="d", id="n" -->
+                <p><i>m</i> = <span id="c">121</span><sup><span id="d">103</span></sup> mod <span id="n">143</span></p>
 
-                <p><i>m</i> = 88</p>
+                <p><i>m</i> = <span id="decrypted">88</span></p>
 
                 <p>Numbers are converted to letters using an encoding system like <span class="highlight">ASCII</span>.</p>
                 <p>For the entered values this would be: <i>c</i> = <i>y</i> and <i>m</i> = <i>x</i> </p>  </div>
