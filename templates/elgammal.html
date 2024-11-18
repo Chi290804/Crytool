@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elgammal</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    </head>
+
+    <body>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+        
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+              <div class="container-fluid">
+                <!-- link to homescreen -->
+                <a class="navbar-brand" href="#">
+                  <img src="" alt="">
+                  INT3230E
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <!-- link to rsa -->
+                      <a class="nav-link" href="rsa_screen.html">RSA</a>
+                    </li>
+                    <li class="nav-item">
+                      <!-- link to elgammal -->
+                      <a class="nav-link" href="elgammal.html">ElGammal</a>
+                    </li>
+                    <li class="nav-item">
+                      <!-- link to eliptic -->
+                      <a class="nav-link" href="elliptic.html">Elliptic</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                        Fundamentals
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                        <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+        </header>
+
+        <main class="pt-5 mb-5">
+            <div class="container mt-5">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="https://user-images.githubusercontent.com/35819136/111074187-25684d80-84e2-11eb-8914-280da6722bc5.png" alt="" class="img-fluid">
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h1>ElGamal encryption</h1>
+                        <p class="mt-4">
+                            In cryptography, the ElGamal encryption system is an asymmetric key encryption algorithm for public-key cryptography which is based on the Diffie–Hellman key exchange. It was described by Taher Elgamal in 1985.
+                        </p>
+                      </div>
+            
+                </div>
+
+                <!-- Step 1: Set prime number -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 1: Set prime number</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>As a starting point for ElGamal, choose a prime number <i>p</i>:</h5>
+                        <!-- connect here: id="form_prime_setting" -->
+                        <form id="form_prime_setting">
+                            <div class="mb-3 row">
+                                <label for="primeP" class="col-sm-2 col-form-label"><i>p</i> =</label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="p" -->
+                                    <input type="number" class="form-control" id="p" placeholder="11" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Step 2: Calculate primitive number: alpha -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 2: Calculate primitive number</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>Calculate a primitive root <i>&alpha;</i> of <i>p</i>:</h5>
+                        <p>Primitive root is a number <i>&alpha;</i> such that for every integer <i>a</i> coprime to <i>p</i>, there exists an integer <i>k</i> such that <i>&alpha;<sup>k</sup> mod p = a</i>.</p>
+                        <p>For example, if <i>p</i> = 11, then <i>&alpha;</i> = 2 is a primitive root of 11.</p>
+                        <p>Primitive roots are not unique, so there may be multiple primitive roots for a given prime number.</p>
+
+                        <hr>
+                        <!-- connect here: id="p" and id="alpha" -->
+                        <p><i>p</i> = <span id="p">11</span> has a primitive root: <i>&alpha;</i> = <span id="alpha">2</span><p>
+                    </div>
+
+                    <div class="card-footer text-body-secondary">
+                        <p>By selecting a suitable primitive root <i>&alpha;</i>, the ElGamal encryption system can securely generate public and private keys, enabling the encryption and decryption of messages. The difficulty of solving the discrete logarithm problem in this cyclic group provides the cryptographic strength of the ElGamal system, making it a robust choice for secure communications.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Choose a -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 3: Choose a</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>Choose a random integer <i>a</i> such that 1 &lt; <i>a</i> &lt; <i>p</i> - 1:</h5>
+                        <!-- connect here: id="form_a_setting" -->
+                        <form id="form_a_setting">
+                            <div class="mb-3 row">
+                                <label for="a" class="col-sm-2 col-form-label"><i>a</i> =</label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="a" -->
+                                    <input type="number" class="form-control" id="a" placeholder="3" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                </div>
+                </div>
+
+                <!-- Step 4: Calculate public key -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 4: Calculate <i>&beta;</i></h4>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>Calculate the public key <i>&beta;</i> using the formula:</h5>
+                        <p><i>&beta;</i> = <i>&alpha;<sup>a</sup> mod p</i></p>
+                        <hr>
+                        <!-- connect here: id="beta", id="alpha", id="a", id="p" -->
+                        <p><i>&beta;</i> = <i><span id="alpha">2</span><sup><span id="a">3</span></sup> mod <span id="p">11</span></i></p>
+                        <p><i>&beta; = <span id="beta">8</span></i></p>
+                    </div>
+
+                    <div class="card-footer text-body-secondary">
+                        <p>The public key <i>&beta;</i> is used to encrypt messages intended for the recipient. It is calculated using the primitive root <i>&alpha;</i> and the random integer <i>a</i> chosen by the recipient. The public key is shared with others to enable secure communication.</p>
+                      </div>
+                </div>
+              
+                  <!-- Step 5: Initialize public & prviate keys -->
+                  <div class="card mt-5">
+                      <div class="card-header">
+                          <h4>Step 5: Initialize public & private keys</h4>
+                      </div>
+  
+                      <div class="card-body">
+                          <h5>Public key:</h5>
+                          <p>(<i>p</i>, <i>&alpha;</i>, <i>&beta;</i>) <i> =
+                            <!-- connect here: id="p", id="alpha", id="beta" -->
+                          (<span id="p">11</span>, <span id="alpha">2</span>, <span id="beta">8</span>)</i>
+                          </i></p>
+                          <hr>
+                          <h5>Private key:</h5>
+                          <p>(<i>p</i>, <i>&alpha;</i>, <i>a</i>) <i>
+                            <!-- connect here: id="p", id="alpha", id="a" -->
+                          = (<span id="p">11</span>, <span id="alpha">2</span>, <span id="a">3</span>)</i>
+                          </i></p>
+                      </div>
+
+                      <div class="card-footer text-body-secondary">
+                          <p>The public key consists of the prime number <i>p</i>, the primitive root <i>&alpha;</i>, and the public key <i>&beta;</i>. The private key consists of the prime number <i>p</i>, the primitive root <i>&alpha;</i>, and the random integer <i>a</i>. The private key is kept secret by the recipient and is used to decrypt messages encrypted with the public key.</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 6: Encrypt message -->
+                  <div class="card mt-5">
+                      <div class="card-header">
+                          <h4>Step 6: Encrypt message</h4>
+                      </div>
+  
+                      <div class="card-body">
+                          <h5>Choose a message <i>m</i> to encrypt:</h5>
+                          <!-- connect here: id="form_message" -->
+                          <form id="form_message">
+                              <div class="mb-3 row">
+                                  <label for="message" class="col-sm-2 col-form-label"><i>m</i> =</label>
+                                  <div class="col-sm-10">
+                                  <!-- connect here: id="message" -->
+                                      <input type="text" class="form-control" id="message" placeholder="Gio va tinh yeu thoi tren dat nuoc toi" required />
+                                  </div>
+                              </div>
+  
+                              <div class="d-flex justify-content-begin mb-3">
+                              <!-- connect here: handle form submission -->
+                                  <button type="submit" class="btn btn-primary">Encrypt</button>
+                              </div>
+                              
+                              <!-- connect here: id="hashed_message" -->
+                              <p>Hashed message: <span id="hashed_message">18112004</span></p>
+                          </form>
+
+                          <hr>
+                          <!-- calculate public -->
+                          <h5>Calculate <i>y</i> the public key using the formula:</h5>
+                          <p><i>c1</i> = <i>&alpha;<sup>k</sup> mod p</i></p>
+                          <p><i>c2</i> = <i>m * &beta;<sup>k</sup> mod p</i></p>
+                          <!-- <hr> -->
+                           
+                          <p>Choose a random integer <i>k</i> such that <i>1 &lt; k &lt; p-1</i>.<p>
+
+                          <form id="form_k_setting">
+                              <div class="mb-3 row">
+                                  <label for="k" class="col-sm-2 col-form-label"><i>k</i> =</label>
+                                  <div class="col-sm-10">
+                                  <!-- connect here: id="k" -->
+                                      <input type="number" class="form-control" id="k" placeholder="4" required />
+                                  </div>
+                              </div>
+  
+                              <div class="d-flex justify-content-begin">
+                              <!-- connect here: handle form submission -->
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                              </div>
+                          </form>
+
+                          <hr>
+                          <h5 class="mt-3">Encrypt the message</h5>
+
+                          <!-- connect here: id="alpha", id="k", id="c1", id="p" -->
+                          <p><i>c1</i> = <i><span id="alpha">2</span><sup><span id="k">4</span></sup> mod <span id="p">11</span></i></p>
+                          <p><i>c1</i> = <span id="c1">5</span></p>
+
+                          <!-- connect here: id="beta", id="k", id="hashed_message", id="c2", id="p" -->
+                          <p><i>c2</i> = <i><span id="hashed_message">18112004</span> * <span id="beta">8</span><sup><span id="k">4</span></sup> mod <span id="p">11</span></i></p>
+                          <p><i>c2</i> = <span id="c2">4</span></p>
+                          
+                          <!-- connect here: id="c1", id="c2" -->
+                          <h6 class="fw-bold">&rArr; Encrypted message: <i>(c1, c2) = (<span id="c1">5</span>, <span id="c2">4</span>)</i></h6>
+
+                      </div>
+                  </div>
+
+                  <!-- Step 7: Decrypt message -->
+                  <div class="card mt-5">
+                      <div class="card-header">
+                          <h4>Step 7: Decrypt message</h4>
+                      </div>
+  
+                      <div class="card-body">
+                          <h5>Decrypt the message using the private key:</h5>
+                          <p><i>m = c2 * c1 <sup>p - a - 1</sup> mod p</i></p>
+                          <!-- connect here: id="c1", id="c2", id="p", id="a" -->
+                          <p><i>m = <span id="c2">4</span> * <span id="c1">5</span> <sup><span id="p">11</span> - <span id="a">3</span> - 1</sup> mod <span id="p">11</span></i></p>
+                          <p><i>m = <span id="m">18112004</span></i></p>
+
+                      </div>
+                    </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-auto py-3 text-white bg-dark fixed-bottom">
+            <div class="text-center p-0.5">
+              INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
+            </div>
+        </footer>
+    </body>
+</html>
