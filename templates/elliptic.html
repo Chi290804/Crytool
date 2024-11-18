@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elliptic</title>
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    </head>
+
+    <body>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+              <div class="container-fluid">
+                <!-- link to homescreen -->
+                <a class="navbar-brand" href="#">
+                  <img src="" alt="">
+                  INT3230E
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <!-- link to rsa -->
+                      <a class="nav-link" href="rsa_screen.html">RSA</a>
+                    </li>
+                    <li class="nav-item">
+                      <!-- link to elgammal -->
+                      <a class="nav-link" href="elgammal.html">ElGammal</a>
+                    </li>
+                    <li class="nav-item">
+                      <!-- link to eliptic -->
+                      <a class="nav-link" href="elliptic.html">Elliptic</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                        Fundamentals
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                        <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+        </header>
+
+        <main class="pt-5 mb-5">
+            <div class="container mt-5">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="https://www.mailhardener.com/images/elliptic-curve-cryptography.png" alt="" class="img-fluid" style="height: 400px;">
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h1>ECC (Elliptic Curve Cryptography)</h1>
+                        <p class="mt-4">
+                            Elliptic Curve Cryptography (ECC) is a public and private key encryption system based on elliptic curve theory. It is a modern cryptographic system that is more efficient, faster, and smaller compared to most cryptographic solutions. ECC allows smaller keys compared to non-EC cryptography to provide equivalent security.
+                        </p>
+                        <div class="mt-4">
+                            ECC is an alternative to the Rivest-Shamir-Adleman (RSA) cryptographic algorithm and is most often used for digital signatures in cryptocurrencies, such as Bitcoin and Ethereum, as well as one-way encryption of emails, data and software.
+                        </div>
+                      </div>
+            
+                </div>
+
+                <!-- Step 1: Set prime number -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 1: Set elliptic curve</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <p>
+                            An elliptic curve is a set of points that satisfy a specific mathematical equation. The equation for an elliptic curve is:
+                        </p>
+                        <p class="text-center">
+                            <i>y <sup>2</sup> = x<sup>3</sup> + a * x + b (mod p) </i>
+                        </p>
+                        <p>
+                            where a and b are constants that define the curve, and x and y are the coordinates of the points on the curve.
+                        </p>
+                        <p>
+                            The elliptic curve is defined over a finite field, which is a set of integers modulo a prime number p. The prime number p is the order of the field, and it determines the size of the field.
+                        </p>
+
+                        <p>The values of a, b, p have to satisfy the following condition:</p>
+
+                        <p class="text-center">
+                            <i> 4 * a<sup>3</sup> + 27 * b<sup>2</sup> mod p != 0 </i>
+                        </p>
+
+                        <hr>
+
+                        <!-- connect here: id="form_curve_setting" -->
+                        <form id="form_curve_setting">
+                            <div class="mb-3 row">
+                                <label for="primeP" class="col-sm-2 col-form-label"><i>p</i> =</label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="p" -->
+                                    <input type="number" class="form-control" id="p" placeholder="11" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="primeA" class="col-sm-2 col-form-label"><i>a</i> =</label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="a" -->
+                                    <input type="number" class="form-control" id="a" placeholder="1" required />
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="primeB" class="col-sm-2 col-form-label"><i>b</i> =</label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="b" -->
+                                    <input type="number" class="form-control" id="b" placeholder="6" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <hr>
+                        <p>We have the following elliptic curve for ECC implementation:</p>
+                        <p class="text-center">
+                            <i>y <sup>2</sup> = x<sup>3</sup> + <span id="a">1</span> * x + <span id="b">6</span> (mod <span id="p">11</span>) </i>
+
+                    </div>
+                </div>
+
+                <!-- Step 2: Choose G -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 2: Choose the base point: G</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>G is an arbitrary point on the curve. In this case, we choose G in a random way. You can change the value G if you want, as long as it belongs to the above curve.</p>
+                        <!-- connect here: id="form_point_setting" -->
+                        <form id="form_point_setting">
+                            <div class="mb-3 row">
+                                <label for="pointX" class="col-sm-2 col-form-label">G = (</label>
+                                <div class="col-sm-1">
+                                <!-- connect here: id="x" -->
+                                    <input type="number" class="form-control" id="x" placeholder="2" required />
+                                </div>
+                                <label for="pointY" class="col-sm-1 col-form-label">,</label>
+                                <div class="col-sm-1">
+                                <!-- connect here: id="y" -->
+                                    <input type="number" class="form-control" id="y" placeholder="7" required />
+                                </div>
+                                <label for="pointY" class="col-sm-1 col-form-label">)</label>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <hr>
+                        <p>We have the following base point for ECC implementation:</p>
+                        <p class="text-center">
+                            <!-- connect here: id="x", id="y" -->
+                            <i>G = (<span id="x">2</span>, <span id="y">7</span>)</i>
+                        </p>
+
+                        <hr>
+                        <!-- Calculate the order of G: -->
+                         <h5>Calculate the order of G:</h5>
+                        <p>The order of G is the smallest positive integer n such that nG = O, where O is the point at infinity. The order of G is a prime number, and it is used to generate the public and private keys in ECC.</p>
+                        <p>Calculate the order of G:</p>
+                        <p class="text-center">
+                            <!-- connect here: id="n" -->
+                            <i>n = <span id="n">?</span></i>
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Step 3: Initialize public & private keys -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 3: Initialize public & private keys</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>The private key <i>s</i> is a random integer between 1 and the order of G: <i>n</i>. The private key is used to generate the public key in ECC.</p>
+                        <p>The public key <i>P</i> is generated by multiplying the base point <i>G</i> by the private key <i>s</i>: <i>P = s * G</i>.</p>
+                        
+                        <hr>
+                        <h5>Choose private key <i>s</i>:</h5>
+                        <!-- connect here: id="form_private_key" -->
+                        <form id="form_private_key">
+                            <div class="mb-3 row">
+                                <label for="privateKey" class="col-sm-2 col-form-label"><i>s = </i></label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="s" -->
+                                    <input type="number" class="form-control" id="s" placeholder="1811" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <hr>
+                        <h5>Calculate public key <i>P</i>:</h5>
+                        <p>
+                            <i>P = s * G</i>
+                        </p>
+
+                        <p>
+                            <!-- connect here: id="s", id="x", id="y"-->
+                            <i>P = <span id="s">1811</span> * (<span id="x">2</span>, <span id="y">7</span>)</i>
+                        </p>
+
+                        <p>
+                            <!-- connect here: id="Px", id="Py" -->
+                            <i>P = (<span id="Px">?</span>, <span id="Py">?</span>)</i>
+                        </p>
+
+                        <hr>
+                        <!-- connect here: id="p", id="a", id="b", id="n", id="G", id="P" -->
+                        <h6 class="fw-bold">&rArr; Public key in form of <i>(Elliptic curve, n, G, P) = ((p, a, b), n, G, P)</i> is: ((<span id="p">11</span>, <span id="a">1</span>, <span id="b"></span>), <span id="n">?</span>, <span id="G">(2, 7)</span>, <span id="P">?</span>)</h6>
+                        <h6 class="fw-bold">&rArr; Private key <i>s = <span id="s">1811</span></i></h6>
+                    </div>
+                </div>
+
+                <!-- Step 4: Encrypt message-->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 4: Encrypt message</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Encryption and decryption in ECC are similar to other public key encryption systems. The sender encrypts the message using the recipient's public key, and the recipient decrypts the message using their private key.</p>
+                        <p>Encryption:</p>
+                        <p>
+                            The sender encrypts the message <i>M</i> using the recipient's public key <i>P</i>:
+                        </p>
+                        <p>
+                            <i>C1 = G * k</i>
+                        </p>
+                        <p>
+                            <i>C2 = M + k * B</i>
+                        </p>
+                        <p>where <i>k</i> is a random integer between 1 and the order of G: <i>n</i></p>
+
+                        <hr>
+                        <h5>Choose message <i>M</i>:</h5>
+                        <!-- connect here: id="form_message" -->
+                        <form id="form_message">
+                            <div class="mb-3 row">
+                                <label for="message" class="col-sm-2 col-form-label"><i>M = </i></label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="message" -->
+                                    <input type="text" class="form-control" id="message" placeholder="gio va tinh yeu thoi tren dat nuoc toi" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here: handle form submission -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                            <!-- connect here: id="hashed_message" -->
+                            <p class="mt-3">Hashed message: <span id="hashed_message">18112004</span></p>
+                        </form>
+
+                        <hr>
+                        <h5>Choose random integer <i>k</i>, which satisfies the condition: <i> 1 < k < n</i></h5>
+                        <!-- connect here: id="form_random" -->
+                        <form id="form_random">
+                            <div class="mb-3 row">
+                                <label for="random" class="col-sm-2 col-form-label"><i>k = </i></label>
+                                <div class="col-sm-10">
+                                <!-- connect here: id="k" -->
+                                    <input type="number" class="form-control" id="k" placeholder="1811" required />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here:-->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <hr>
+                        <h5>Encrypt message:</h5>
+                        <p>
+                            <i>C1 = G * k</i>
+                        </p>
+                        <p>
+                            <!-- connect here: id="x", id="y", id="k" -->
+                            <i>C1 = (<span id="x">2</span>, <span id="y">7</span>) * <span id="k">1811</span></spand></i>
+                        </p>
+                        <p>
+                            <!-- connect here: id="C1x", id="C1y" -->
+                            <i>C1 = (<span id="C1x">?</span>, <span id="C1y">?</span>)</i>
+                        </p>
+                        <p>
+                            <i>C2 = M + k * P (mod p)</i>
+                        </p>
+                        <p>
+                            <!-- connect here: id="p", id="hash_message", id="k", id="Px", id="Py", id="p" -->
+                            <i>C2 = <span id="hashed_message">18112004</span> + <span id="k">1811</span> * (<span id="Px">?</span>, <span id="Py">?</span>) (mod <span id="p">11</span>)</i>
+                        </p>
+                        <p>
+                            <!-- connect here: id="C2x", id="C2y" -->
+                            <i>C2 = (<span id="C2x">?</span></i>, <span id="C2y">?</span></i>)
+                        <p
+                        
+                        <h6 class="fw-bold">&rArr; Encrypted message<i> C = (C1, C2) = ((<span id="C1x">?</span>, <span id="C1y">?</span>), (<span id="C2x">?</span>, <span id="C2y">?</span>))</i></h6>
+
+
+                    </div>
+                </div>
+
+                <!-- Step 5: Decrypt message -->
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Step 5: Decrypt message</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Decryption:</p>
+                        <p>
+                            The recipient decrypts the message <i>C</i> using their private key <i>s</i>:
+                        </p>
+                        <p>
+                            <i>M = C2 - s * C1</i>
+                        </p>
+
+                        <hr>
+                        <h5>Decrypt message:</h5>
+                        <p>
+                            <!-- connect here: id="C1x", id="C1y", id="s", id="C2x", id="C2y" -->
+                            <i>M = (<span id="C2x">?</span>, <span id="C2y">?</span>) - <span id="s">1811</span> * (<span id="C1x">?</span>, <span id="C1y">?</span>)</i>
+                        </p>
+                        <p>
+                            <!-- connect here: id="M" -->
+                            <i>M = (<span id="M">?</span>)</i>
+                        </p>
+
+                        <!-- connect here: id="M" -->
+                        <h6 class="fw-bold">&rArr; Decrypted message: <i>M = <span id="M">?</span></i></h6>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-auto py-3 text-white bg-dark fixed-bottom">
+            <div class="text-center p-0.5">
+              INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
+            </div>
+        </footer>
+    </body>
+</html>
