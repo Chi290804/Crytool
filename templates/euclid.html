@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Euclid</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    </head>
+
+    <body>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+                <div class="container-fluid">
+                  <!-- link to homescreen -->
+                  <a class="navbar-brand" href="#">
+                    <img src="" alt="">
+                    INT3230E
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <!-- link to rsa -->
+                        <a class="nav-link" href="rsa_screen.html">RSA</a>
+                      </li>
+                      <li class="nav-item">
+                        <!-- link to elgammal -->
+                        <a class="nav-link" href="elgammal.html">ElGammal</a>
+                      </li>
+                      <li class="nav-item">
+                        <!-- link to eliptic -->
+                        <a class="nav-link" href="elliptic.html">Elliptic</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                          Fundamentals
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                          <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </header>
+
+        <main class="pt-5 mb-5">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="https://matthewkrump.com/assets/2017-06-16-euclid.png" alt="" class="img-fluid" style="height: 400px;">
+                    </div>
+                    
+                    <div class="col-md-9">
+                        <h1>(Extended) Euclid algorithm</h1>
+                        <div class="mt-4">
+                            The Euclidean algorithm is a method for finding the greatest common divisor (GCD) of two numbers.  It is named after the ancient Greek mathematician Euclid, who first described it in his Elements (c. 300 BC). It is an example of an algorithm, a step-by-step procedure for performing a calculation according to well-defined rules, and is one of the oldest algorithms in common use. It can be used to reduce fractions to their simplest form, and is a part of many other number-theoretic and cryptographic calculations.                        
+                        </div>
+                        
+                        <div class="mt-4">
+                            The extended Euclidean algorithm is an extension of the Euclidean algorithm, and it computes not only the GCD of two numbers, but also the coefficients of Bézout's identity, which are integers a and b such that ax + by = gcd(a, b). 
+                        </div>
+
+                        <a type="button" class="btn btn-primary mt-3" href="https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/">
+                            More information
+                        </a>
+                    </div>
+                </div>
+
+                <!-- GCD calculation -->
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h4>GCD (Greatest Common Divisor)</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="card-text">
+                            The greatest common divisor (GCD) of two numbers is the largest number that divides both of them. For example, the GCD of 8 and 12 is 4.
+                        </p>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Number 1</span>
+                                    <!-- connect here id="a" -->
+                                    <input type="number" class="form-control" id="a" placeholder="18">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Number 2</span>
+                                    <!-- connect here id="b" -->
+                                    <input type="number" class="form-control" id="b" placeholder="11">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <!-- connect here: handdle form submission -->
+                            <button type="button" class="btn btn-primary" id="gcd_button">Calculate GCD</button>
+                        </div>
+
+                        <hr>
+
+                        <div class="mt-3">
+                            <!-- connect here: id="a", id="b", id="gcd" -->
+                            <h5>GCD (<span id="a">18</span>, <span id="b">11</span>) = <span id="gcd">1</span></h5>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <p class="text-muted text-body-secondary">
+                            The GCD of two numbers can be calculated using the Euclidean algorithm. The algorithm works by repeatedly dividing the larger number by the smaller number and replacing the larger number with the remainder until the remainder is zero. The last non-zero remainder is the GCD of the two numbers.
+                        </p>
+                    </div>
+                </div>
+                
+
+                <!-- Extended Euclid calculation -->
+                <div class="card mt-5">
+
+                    <div class="card-header text-center">
+                        <h4>Extended Euclid Algorithm for Dophatine Equation</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="card-text">
+                            The extended Euclidean algorithm is an extension of the Euclidean algorithm, and it computes not only the GCD of two numbers, but also the coefficients of Bézout's identity, which are integers a and b such that <i>ax + by = gcd(a, b)</i>. 
+                        </p>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Number 1</span>
+                                    <!-- connect here id="a1" -->
+                                    <input type="number" class="form-control" id="a1" placeholder="18">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Number 2</span>
+                                    <!-- connect here id="b1" -->
+                                    <input type="number" class="form-control" id="b1" placeholder="11">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <!-- connect here: handdle form submission -->
+                            <button type="button" class="btn btn-primary" id="extended_euclid_button">Calculate Extended Euclid</button>
+                        </div>
+
+                        <hr>
+
+                        <div class="mt-3">
+                            <!-- connect here: id="a1", id="1b", id="gcd1" -->
+                            <h5>The Dophatine equation:</h5>
+                            <p class="text-center"><i><span id="a1">18</span> * x + <span id="b1">11</span> * y = gcd(<span id="a1">18</span>, <span id="b1">11</span>)</i></p>
+                            <p>The coefficients: <i>a = <span id="a1">?</span>, b = <span id="b1">?</span></i></p>
+                            <p>The GCD: <i>gcd(<span id="a1">18</span>, <span id="b1">11</span>) = <span id="gcd1">1</span></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-auto py-3 text-white bg-dark fixed-bottom">
+            <div class="text-center p-0.5">
+              INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
+            </div>
+        </footer>
+    </body>
+
+</html>
