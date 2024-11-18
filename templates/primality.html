@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Primality test</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    </head>
+
+    <body>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+                <div class="container-fluid">
+                  <!-- link to homescreen -->
+                  <a class="navbar-brand" href="#">
+                    <img src="" alt="">
+                    INT3230E
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <!-- link to rsa -->
+                        <a class="nav-link" href="rsa_screen.html">RSA</a>
+                      </li>
+                      <li class="nav-item">
+                        <!-- link to elgammal -->
+                        <a class="nav-link" href="elgammal.html">ElGammal</a>
+                      </li>
+                      <li class="nav-item">
+                        <!-- link to eliptic -->
+                        <a class="nav-link" href="elliptic.html">Elliptic</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                          Fundamentals
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                          <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="pt-5 mb-5">
+                <div class="container mt-5">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="https://cdn-skill.splashmath.com/panel-uploads/GlossaryTerm/62571c61b87c497caac1aa3228efd5a0/1545882174_List-of-prime-numbers-chart-1-to-100.png" alt="" class="img-fluid" style="height: 400px;">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h1>Prime number</h1>
+                            <p class="mt-4">
+                                Prime numbers are natural numbers greater than 1 that have exactly two factors: 1 and the number itself. This means that a prime number is only divisible by 1 and itself. For example, the number 5 is a prime number because it has only two factors, 1 and 5. On the other hand, the number 6 is not a prime number because it has more than two factors: 1, 2, 3, and 6
+                            </p>
+                        </div>
+                    </div>
+                
+                    <div class="d-flex justify-content-center my-5">
+                        <div class="col">
+                          <div class="bg-secondary text-white card">
+                            <div class="card-body">
+                                <!-- <h2 class="text-center">Primality test</h2> -->
+                                <p>Primality testing is the act of determining whether a given number is prime. Several algorithms have been developed to test primality, including the Fermat test, the Miller-Rabin test, and the AKS test. These algorithms use different mathematical properties to determine whether a number is prime or composite. Primality testing is an important concept in number theory and cryptography, as prime numbers are used in many cryptographic algorithms.</p>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-5">
+                        <div class="card-group">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">Fermat Test</h5>
+                                <p class="card-text">
+                                    The Fermat primality test is a probabilistic algorithm used to determine whether a given number is prime or composite. The test is based on Fermat's Little Theorem, which states that if <i>p</i> is prime and <i>a</i> is not divisible by <i>p</i>, then <i>a<sup>(p-1)</sup> ≡ 1 (mod p)</i>. To test whether p is prime, one can pick random integers <i>a</i> not divisible by <i>p</i> and see whether the congruence holds. If it does not hold for <i>a</i> value of <i>a</i>, then <i>p</i> is composite.
+                                </p>
+                                <p class="card-text"><small class="text-body-secondary"><a href="https://www.geeksforgeeks.org/fermat-method-of-primality-test/">For more information</a></small></p>
+                              </div>
+                            </div>
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">Miller-Rabin</h5>
+                                <p class="card-text">
+                                    The property is the following. For a given odd integer <i>n > 2</i>, let’s write <i>n − 1</i> as <i>2<sup>s</sup>d</i> where <i>s</i> is a positive integer and <i>d</i> is an odd positive integer. Let’s consider an integer <i>a</i>, called a base, which is coprime to <i>n</i>. Then, <i>n</i> is said to be a strong probable prime to base <i>a</i> if one of these congruence relations holds:  
+                                    <ul>
+                                        <li><i>a<sup>d</sup> ≡ 1 (mod n)</i></li>
+                                        <li><i>a<sup>2<sup>r</sup>d</sup> ≡ -1 (mod n)</i> for some <i>r</i> such that <i>0 ≤ r < s</i></li>
+                                    </ul>  
+                                </p>
+                                <p class="card-text"><small class="text-body-secondary"><a href="https://www.geeksforgeeks.org/primality-test-set-3-miller-rabin/">For more information</a></small></p>
+                              </div>
+                            </div>
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">AKS (Agrawal - Kayal - Saxena)</h5>
+                                <p class="card-text">
+                                    This algorithm is significant because it is the first to achieve general, polynomial-time, deterministic, and unconditionally correct primality testing. The AKS primality test is based on the following theorem: An integer <i>n</i> greater than 2 is prime if and only if the polynomial congruence relation holds for some <i>a</i> coprime to <i>n</i>. The algorithm evaluates this congruence for a large set of <i>a</i> values, whose size is polynomial to the digits of <i>n</i>.
+                                </p>
+                                <p class="card-text"><small class="text-body-secondary"><a href="https://www.geeksforgeeks.org/aks-primality-test/">For more information</a></small></p>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+
+                    <!-- Primality test -->
+                    <div class="card mt-5">
+                        <div class="card-header text-center">
+                            <h4>Primality Testing</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- connect here: id="input_form" -->
+                            <form id="input_form"></form>
+                                <div class="mb-3">
+                                    <label for="number" class="form-label">Enter a number</label>
+                                    <!-- connect here: id="number" name="number" -->
+                                    <input type="number" class="form-control" id="number" name="number" placeholder="1811" required>
+                                </div>
+                                <!-- connect here: handling submission -->
+                                <button type="submit" class="btn btn-primary">Test</button>
+                            </form>
+
+                            <hr>
+                            <!-- connect here: id="number" -->
+                            <p><span id="number">1811</span> is a prime number.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Prime generation -->
+                    <div class="card mt-5">
+                        <div class="card-header text-center">
+                            <h4>Prime Generation</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- choose the range -->
+                            <p>Randomly generate a prime number <i>p</i> within the range <i>[a, b]</i></p>
+                            <!-- connect here: id="range_form" -->
+                            <form id="range_form">
+                                <div class="mb-3">
+                                    <label for="a" class="form-label">Enter the lower bound</label>
+                                    <!-- connect here: id="a" name="a" -->
+                                    <input type="number" class="form-control" id="a" name="a" placeholder="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="b" class="form-label">Enter the upper bound</label>
+                                    <!-- connect here: id="b" name="b" -->
+                                    <input type="number" class="form-control" id="b" name="b" placeholder="1000" required>
+                                </div>
+                                <!-- connect here: handling submission -->
+                                <button type="submit" class="btn btn-primary">Generate</button>
+                            </form>
+
+
+                            <hr>
+                            <!-- connect here: id="prime" -->
+                            <p>A prime number <i>p</i> within the range [<span id="a">1</span>, <span id="b">1000</span>] is <span id="prime">997</span>.</p>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </main>
+
+        <footer class="text-center mt-auto py-3 text-white bg-dark fixed-bottom">
+            <div class="text-center p-0.5">
+              INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
+            </div>
+        </footer>
+    </body>
+</html>
