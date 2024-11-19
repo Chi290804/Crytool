@@ -1,6 +1,9 @@
 import random
 
 def mod_exp(base, exp, mod):
+    if not (isinstance(base, int) and isinstance(exp, int) and isinstance(mod, int)):
+        raise TypeError("Base, exponent, and modulus must be integers")
+    
     result = 1
     base = base % mod
     while exp > 0:
@@ -10,20 +13,21 @@ def mod_exp(base, exp, mod):
         base = (base * base) % mod
     return result
 
+
 def gcd(a, b):
     while b:
         a, b = b, a % b
     return a
-
-def generate_rsa_keys(p, q):
+def caculate_n(p, q):
     n = p * q
     phi_n = (p - 1) * (q - 1)
-    
+    return n, phi_n
+def generate_rsa_keys(n, phi_n, e):
+
     # Chọn e ngẫu nhiên sao cho gcd(e, phi_n) = 1
     # e = random.randrange(2, phi_n)
     # while gcd(e, phi_n) != 1:
     #     e = random.randrange(2, phi_n)
-    e = 19
     # Tính d là nghịch đảo của e modulo phi_n
     d = pow(e, -1, phi_n)
     
@@ -32,17 +36,26 @@ def generate_rsa_keys(p, q):
 
 def encrypt_message(message, public_key):
     n, e = public_key
-    # message_int = int.from_bytes(message.encode(), 'big')  
-    message_int = hashing(message)
+    
+    # Nếu message là chuỗi, mã hóa nó thành số nguyên
+    if isinstance(message, str):
+        message_int = hashing(message)  # Sử dụng hàm hashing để chuyển đổi
+    elif isinstance(message, int):
+        message_int = message
+    else:
+        raise ValueError("Message must be a string or integer")
+
+    # Mã hóa message
     encrypted_message = mod_exp(message_int, e, n)
     return encrypted_message
 
+
 def decrypt_message(encrypted_message, private_key):
     n, d = private_key
-    decrypted_message_int = mod_exp(encrypted_message, d, n)
+    decrypted_message_int = mod_exp(int(encrypted_message), d, n)
     # decrypted_message = decrypted_message_int.to_bytes((decrypted_message_int.bit_length() + 7) // 8, 'big').decode()
-    decrypted_message = dehashing(decrypted_message_int)
-    return decrypted_message
+    # decrypted_message = dehashing(decrypted_message_int)
+    return decrypted_message_int
 def hashing(txt):
     
     # txt = txt.upper()
