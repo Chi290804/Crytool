@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RSA Signature</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    </head>
+
+    <body>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+        <header>
+            <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+                <div class="container-fluid">
+                  <!-- link to homescreen -->
+                  <a class="navbar-brand" href="#">
+                    <img src="" alt="">
+                    INT3230E
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                              RSA
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="rsa_screen.html">RSA</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="rsa_signature.html">RSA Digital Signature</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                              ElGammal
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="elgammal.html">Elgammal</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="elgammal_signature.html">Elgammal Digital Signature</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                              Elliptic
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="elliptic.html">ECC</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="elliptic_signature.html">ECC Digital Signature</a></li>
+                            </ul>
+                        </li>
+
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                          Fundamentals
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
+                          <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="other.html">Something else here</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="pt-5 mb-5">
+                <div class="container mt-3">
+                    <h1 class="text-center">RSA Signature</h1>
+
+                    <div class="row mt-5">
+
+                        <div class="card-group">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212145658/step1.jpg" class="img-fluid rounded-start" alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Step 1</h5>
+                                      <p class="card-text">Sender A uses the SHA-1 Message Digest Algorithm to calculate the message digest (MD1) over the original message M.</p>
+                                      <p class="card-text"><small class="text-body-secondary">Image: Message digest calculation</small></p>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 ms-5" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212145816/step4.jpg" class="img-fluid rounded-start" alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Step 4</h5>
+                                      <p class="card-text">When B receives the Original Message(M) and the Digital Signature(DS) from A, it first uses the same message-digest algorithm as was used by A and calculates its own Message Digest (MD2) for M.</p>
+                                      <p class="card-text"><small class="text-body-secondary">Image: Receiver calculates its own message digest</small></p>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card-group">
+
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212145725/step2.jpg" class="img-fluid rounded-start" alt="...">
+                                    <p class="card-text text-center m-3"><small class="text-body-secondary">Image: Digital signature creation</small></p>
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Step 2</h5>
+                                      <p class="card-text">A now encrypts the message digest with its private key. The output of this process is called Digital Signature (DS) of A.</p>
+
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 ms-5" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212145841/step5.jpg" class="img-fluid rounded-start" alt="...">
+                                    <p class="card-text text-center m-3"><small class="text-body-secondary">Image: Receiver retrieves sender’s message digest</small></p>
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Step 5</h5>
+                                      <p class="card-text">Now B uses A’s public key to decrypt the digital signature because it was encrypted by A’s private key. The result of this process is the original Message Digest (MD1) which was calculated by A.</p>
+                                      
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-group">
+
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212151145/step3.jpg" class="img-fluid rounded-start" alt="...">
+                                    <p class="card-text text-center m-3"><small class="text-body-secondary">Image: Transmission of original message and digital signature simultaneously</small></p>
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Step 3</h5>
+                                      <p class="card-text">Now sender A sends the digital signature (DS) along with the original message (M) to B.</p>
+
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 ms-5" style="max-width: 540px;">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20201212145912/step6.jpg" class="img-fluid rounded-start" alt="...">
+                                    <p class="card-text text-center m-3"><small class="text-body-secondary">Image: Verification of the digital signature</small></p>
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title
+                                        ">Step 6</h5>
+                                        <p class="card-text">B compares the Message Digest (MD2) calculated by itself with the Message Digest (MD1) received from A. If both are the same, then the digital signature is verified.</p>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1 class="text-center mt-5">Example</h1>
+
+                    <div class="card-group mt-5">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Bob</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <!-- connect here: id="rsa system setting" -->
+                                <form id="system1_setting">
+                                    <div class="mb-3 row">
+                                        <label for="primeP" class="col-sm-2 col-form-label"><i>p</i> =</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="p1" -->
+                                            <input type="number" class="form-control" id="p1" placeholder="11" required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="primeQ" class="col-sm-2 col-form-label"><i>q</i> =</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="q1" -->
+                                            <input type="number" class="form-control" id="q1" placeholder="13" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="message" class="col-sm-2 col-form-label">Message:</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="message1" -->
+                                            <input type="text" class="form-control" id="message1" placeholder="Hello Alice" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="signature" class="col-sm-2 col-form-label">Signature</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="signature1" -->
+                                            <input type="text" class="form-control" id="signature1" placeholder="Bob" required />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-begin">
+                                        <!-- connect here: handle form submission -->
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Alice</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <!-- connect here: id="rsa system setting" -->
+                                <form id="system2_setting">
+                                    <div class="mb-3 row">
+                                        <label for="primeP2" class="col-sm-2 col-form-label"><i>p</i> =</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="p2" -->
+                                            <input type="number" class="form-control" id="p2" placeholder="11" required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="primeQ2" class="col-sm-2 col-form-label"><i>q</i> =</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="q2" -->
+                                            <input type="number" class="form-control" id="q2" placeholder="13" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="message2" class="col-sm-2 col-form-label">Message:</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="message2" -->
+                                            <input type="text" class="form-control" id="message2" placeholder="Hello Bob" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="signature2" class="col-sm-2 col-form-label">Signature</label>
+                                        <div class="col-sm-10">
+                                            <!-- connect here: id="signature2" -->
+                                            <input type="text" class="form-control" id="signature2" placeholder="Alice" required />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-begin">
+                                        <!-- connect here: handle form submission -->
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- From Bob to Alice  -->
+                    <div class="card my-5">
+                        <div class="card-header">
+                          <h4>From: Bob, to: Alice</h4>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold">&rArr; Sending & Receving Process:</h6>
+                            <div class="card-group mt-3">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="text-center">Sender</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Bob sends the message to Alice.</p>
+                                        <!-- conect here: id="hash_signature1" -->
+                                        <p class="card-text">Sender: <span id="signature1">Bob</span></p>
+                                        <!-- connect here: id="message1" -->
+                                        <p class="card-text">Message: <span id="message1">Hello Alice</span></p>
+                                        <!-- connect here: id="hashed_signature1" -->
+                                        <p class="card-text">Hashed signature: <span id="hashed_signature1">?</span></p>
+                                        <!-- connect here: id="hashed_message1" -->
+                                        <p class="card-text">Hashed message: <span id="hashed_message1">?</span></p>
+                                        <!-- connect here: id="encrypted_signature1" -->
+                                        <p class="card-text">Encrypted signature: <span id="encrypted_signature1">?</span></p>
+                                        <!-- connect here: id="encrypted_message1" -->
+                                        <p class="card-text">Encrypted message: <span id="encrypted_message1">?</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="text-center">Receiver</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Alice receives the message from Bob.</p>
+                                        <!-- connect here: id="signature2" -->
+                                        <p class="card-text">Receiver: <span id="signature2">Alice</span></p>
+                                        <!-- connect here: id="decrypted_signature1" -->
+                                        <p class="card-text">Decrypt signature: <span id="decrypted_signature1">?</span></p>
+                                        <!-- connect here: id="decrypted_message1" -->
+                                        <p class="card-text">Decrypt message: <span id="decrypted_message1">?</span></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- From Alice to Bob  -->
+                    <div class="card my-5">
+                        <div class="card-header">
+                          <h4>From: Alice, to: Bob</h4>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold">&rArr; Sending & Receving Process:</h6>
+                            <div class="card-group">
+                                    
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="text-center">Sender</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Alice sends the message to Bob.</p>
+                                        <!-- conect here: id="hash_signature2" -->
+                                        <p class="card-text">Sender: <span id="signature2">Alice</span></p>
+                                        <!-- connect here: id="message2" -->
+                                        <p class="card-text">Message: <span id="message2">Hello Bob</span></p>
+                                        <!-- connect here: id="hashed_signature2" -->
+                                        <p class="card-text">Hashed signature: <span id="hashed_signature2">?</span></p>
+                                        <!-- connect here: id="hashed_message2" -->
+                                        <p class="card-text">Hashed message: <span id="hashed_message2">?</span></p>
+                                        <!-- connect here: id="encrypted_signature2" -->
+                                        <p class="card-text">Encrypted signature: <span id="encrypted_signature2">?</span></p>
+                                        <!-- connect here: id="encrypted_message2" -->
+                                        <p class="card-text">Encrypted message: <span id="encrypted_message2">?</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="text-center">Receiver</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Bob receives the message from Alice.</p>
+                                        <!-- connect here: id="signature1" -->
+                                        <p class="card-text">Receiver: <span id="signature1">Bob</span></p>
+                                        <!-- connect here: id="decrypted_signature2" -->
+                                        <p class="card-text">Decrypt signature: <span id="decrypted_signature2">?</span></p>
+                                        <!-- connect here: id="decrypted_message2" -->
+                                        <p class="card-text">Decrypt message: <span id="decrypted_message2">?</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-auto py-3 text-white bg-dark fixed-bottom">
+            <div class="text-center p-0.5">
+              INT3230E - Cryptography: Nguyễn Hữu Thế & Hoàng Kim Chi
+            </div>
+        </footer>
+    </body>
+
+</html>
