@@ -137,8 +137,8 @@
             <p>Calculate <i>n</i> = <i>p</i> * <i>q</i> and <i>φ(n)</i> = (<i>p</i> - 1) * (<i>q</i> - 1).</p>
             
             <!-- connect here: id="n" and id="phi" -->
-            <p><i>n</i> = <span id="n">143</span></p>
-            <p><i>φ(n)</i> = <span id="phi">120</span></p>
+            <p><i>n</i> = <span id="n"></span></p>
+            <p><i>φ(n)</i> = <span id="phi"></span></p>
         
           </div>
           <div class="card-footer text-body-secondary">
@@ -188,15 +188,21 @@
               For the values entered, <i>d</span> can have the following value:
 
             <!-- connect here id="d" -->
-            <p><i>d</i> = <span id="d">103</span></p>
+            <p><i>d</i> = <span id="d"></span></p>
 
             <hr>
             <h6 class="fw-bold">&rArr; Resulting keys</h6>
             <ul>
-              <!-- connect here: id="n", id="e", id="d" -->
-              <li><p>Public key: <i>(n, e)</i> = (<span id="n">143</span>, <span id="e">7</span>)</p></li>
-              <li><p>Private key: <i>(n, d)</i> = (<span id="n">143</span>, <span id="d">103</span>)</p></li>
+              <!-- Hiển thị public key -->
+              <li>
+                <p>Public key: <i>(n, e)</i> = <span id="public-key">(n, e)</span></p>
+              </li>
+              <!-- Hiển thị private key -->
+              <li>
+                <p>Private key: <i>(n, d)</i> = <span id="private-key">(n, d)</span></p>
+              </li>
             </ul>
+            
           </div>
         </div>
       
@@ -284,5 +290,87 @@
       INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
     </div>
   </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Step 1: Calculate n and φ(n)
+      const primesForm = document.getElementById("primes_setting");
+      primesForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const p = document.getElementById("p").value;
+        const q = document.getElementById("q").value;
+
+        const response = await fetch("/caculate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ p, q }),
+        });
+
+        const data = await response.json();
+        document.getElementById("n").textContent = data.n;
+        document.getElementById("phi").textContent = data.phi_n;
+      });
+
+      // Step 3: Choose e
+      const eForm = document.getElementById("choose_e");
+      eForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const eValue = document.getElementById("e").value;
+        const n = document.getElementById("n").textContent;
+        const phi_n = document.getElementById("phi").textContent;
+
+        const response = await fetch("/generate_keys", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ e: eValue, n, phi_n }),
+        });
+
+        const data = await response.json();
+
+        // Cập nhật giá trị của khóa công khai và khóa riêng tư
+        document.getElementById("e").textContent = data.public_key[1];
+        document.getElementById("d").textContent = data.private_key[1];
+
+        // Hiển thị public key và private key
+        document.querySelector("#public-key").textContent = `(${data.public_key[0]}, ${data.public_key[1]})`;
+        document.querySelector("#private-key").textContent = `(${data.private_key[0]}, ${data.private_key[1]})`;
+      });
+
+
+      // Step 5: Encrypt
+      const encryptForm = document.getElementById("form_encrypt");
+      encryptForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const m = parseInt(document.getElementById("m").value); // Chuyển đổi m thành số nguyên
+        const eValue = parseInt(document.getElementById("e").textContent); // Chuyển đổi e thành số nguyên
+        const n = parseInt(document.getElementById("n").textContent); // Chuyển đổi n thành số nguyên
+
+        const response = await fetch("/encrypt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: m, public_key: [n, eValue] }),
+        });
+
+        const data = await response.json();
+        document.getElementById("c").textContent = data.encrypted_message;
+      });
+
+      // Step 6: Decrypt
+      const decryptButton = document.getElementById("decrypt_button");
+      decryptButton.addEventListener("click", async () => {
+        const c = document.getElementById("c").textContent;
+        const d = document.getElementById("d").textContent;
+        const n = document.getElementById("n").textContent;
+
+        const response = await fetch("/decrypt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ encrypted_message: c, private_key: [n, d] }),
+        });
+
+        const data = await response.json();
+        document.getElementById("decrypted").textContent = data.decrypted_message;
+      });
+    });
+  </script>
 </body>
 </html>

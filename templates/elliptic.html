@@ -156,7 +156,7 @@
                         <hr>
                         <p>We have the following elliptic curve for ECC implementation:</p>
                         <p class="text-center">
-                            <i>y <sup>2</sup> = x<sup>3</sup> + <span id="a">1</span> * x + <span id="b">6</span> (mod <span id="p">11</span>) </i>
+                            <i>y <sup>2</sup> = x<sup>3</sup> + <span id="step1-a">1</span> * x + <span id="step1-b">6</span> (mod <span id="step1-p">11</span>) </i>
 
                     </div>
                 </div>
@@ -194,7 +194,7 @@
                         <p>We have the following base point for ECC implementation:</p>
                         <p class="text-center">
                             <!-- connect here: id="x", id="y" -->
-                            <i>G = (<span id="x">2</span>, <span id="y">7</span>)</i>
+                            <i>G = (<span id="step2-x">2</span>, <span id="step2-y">7</span>)</i>
                         </p>
 
                         <hr>
@@ -204,7 +204,7 @@
                         <p>Calculate the order of G:</p>
                         <p class="text-center">
                             <!-- connect here: id="n" -->
-                            <i>n = <span id="n">?</span></i>
+                            <i>n = <span id="step2-n"></span></i>
                         </p>
 
                     </div>
@@ -245,18 +245,18 @@
 
                         <p>
                             <!-- connect here: id="s", id="x", id="y"-->
-                            <i>P = <span id="s">1811</span> * (<span id="x">2</span>, <span id="y">7</span>)</i>
+                            <i>P = <span id="step3-s">1811</span> * (<span id="step3-x">2</span>, <span id="step3-y">7</span>)</i>
                         </p>
 
                         <p>
                             <!-- connect here: id="Px", id="Py" -->
-                            <i>P = (<span id="Px">?</span>, <span id="Py">?</span>)</i>
+                            <i>P = (<span id="step3-Px">?</span>, <span id="step3-Py">?</span>)</i>
                         </p>
 
                         <hr>
                         <!-- connect here: id="p", id="a", id="b", id="n", id="G", id="P" -->
-                        <h6 class="fw-bold">&rArr; Public key in form of <i>(Elliptic curve, n, G, P) = ((p, a, b), n, G, P)</i> is: ((<span id="p">11</span>, <span id="a">1</span>, <span id="b"></span>), <span id="n">?</span>, <span id="G">(2, 7)</span>, <span id="P">?</span>)</h6>
-                        <h6 class="fw-bold">&rArr; Private key <i>s = <span id="s">1811</span></i></h6>
+                        <h6 class="fw-bold">&rArr; Public key in form of <i>(Elliptic curve, n, G, P) = ((p, a, b), n, G, P)</i> is: ((<span id="step3-p">11</span>, <span id="step3-a">1</span>, <span id="step3-b"></span>), <span id="step3-n">?</span>, <span id="step3-G">(2, 7)</span>, (<span id="step3-Px2">?</span>, <span id="step3-Py2">?</span>))</h6>
+                        <h6 class="fw-bold">&rArr; Private key <i>s = <span id="step3-s">1811</span></i></h6>
                     </div>
                 </div>
 
@@ -297,7 +297,7 @@
                             </div>
 
                             <!-- connect here: id="hashed_message" -->
-                            <p class="mt-3">Hashed message: <span id="hashed_message">18112004</span></p>
+                            <p class="mt-3">Message in point: <span id="hashed_message"></span></p>
                         </form>
 
                         <hr>
@@ -325,25 +325,25 @@
                         </p>
                         <p>
                             <!-- connect here: id="x", id="y", id="k" -->
-                            <i>C1 = (<span id="x">2</span>, <span id="y">7</span>) * <span id="k">1811</span></spand></i>
+                            <i>C1 = (<span id="step4-x">2</span>, <span id="step4-y">7</span>) * <span id="step4-k">1811</span></spand></i>
                         </p>
                         <p>
                             <!-- connect here: id="C1x", id="C1y" -->
-                            <i>C1 = (<span id="C1x">?</span>, <span id="C1y">?</span>)</i>
+                            <i>C1 = (<span id="step4-C1x">?</span>, <span id="step4-C1y">?</span>)</i>
                         </p>
                         <p>
                             <i>C2 = M + k * P (mod p)</i>
                         </p>
                         <p>
                             <!-- connect here: id="p", id="hash_message", id="k", id="Px", id="Py", id="p" -->
-                            <i>C2 = <span id="hashed_message">18112004</span> + <span id="k">1811</span> * (<span id="Px">?</span>, <span id="Py">?</span>) (mod <span id="p">11</span>)</i>
+                            <i>C2 = <span id="step4-hashed_message">18112004</span> + <span id="step4-k">1811</span> * (<span id="step4-Px">?</span>, <span id="step4-Py">?</span>) (mod <span id="step4-p">11</span>)</i>
                         </p>
                         <p>
                             <!-- connect here: id="C2x", id="C2y" -->
-                            <i>C2 = (<span id="C2x">?</span></i>, <span id="C2y">?</span></i>)
+                            <i>C2 = (<span id="step4-C2x">?</span></i>, <span id="step4-C2y">?</span></i>)
                         <p
                         
-                        <h6 class="fw-bold">&rArr; Encrypted message<i> C = (C1, C2) = ((<span id="C1x">?</span>, <span id="C1y">?</span>), (<span id="C2x">?</span>, <span id="C2y">?</span>))</i></h6>
+                        <h6 class="fw-bold">&rArr; Encrypted message<i> C = (C1, C2) = ((<span id="step4-C1x2">?</span>, <span id="step4-C1y2">?</span>), (<span id="step4-C2x2">?</span>, <span id="step4-C2y2">?</span>))</i></h6>
 
 
                     </div>
@@ -367,15 +367,15 @@
                         <h5>Decrypt message:</h5>
                         <p>
                             <!-- connect here: id="C1x", id="C1y", id="s", id="C2x", id="C2y" -->
-                            <i>M = (<span id="C2x">?</span>, <span id="C2y">?</span>) - <span id="s">1811</span> * (<span id="C1x">?</span>, <span id="C1y">?</span>)</i>
+                            <i>M = (<span id="step5-C2x">?</span>, <span id="step5-C2y">?</span>) - <span id="step5-s">1811</span> * (<span id="step5-C1x">?</span>, <span id="step5-C1y">?</span>)</i>
                         </p>
                         <p>
                             <!-- connect here: id="M" -->
-                            <i>M = (<span id="M">?</span>)</i>
+                            <i>M = (<span id="step5-M">?</span>)</i>
                         </p>
 
                         <!-- connect here: id="M" -->
-                        <h6 class="fw-bold">&rArr; Decrypted message: <i>M = <span id="M">?</span></i></h6>
+                        <h6 class="fw-bold">&rArr; Decrypted message: <i>M = <span id="step5-M">?</span></i></h6>
                     </div>
                 </div>
             </div>
@@ -386,5 +386,273 @@
               INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
             </div>
         </footer>
+        <script type="text/javascript">
+            // Send a request to check if p, a, b are valid
+            document.getElementById('form_curve_setting').addEventListener('submit', function (e) {
+                e.preventDefault();
+            
+                // Get the values of p, a, and b from the form inputs
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+            
+                // Update the values of step1-a, step1-b, and step1-p elements
+                document.getElementById('step1-a').textContent = a;  // Update step1-a with value of 'a'
+                document.getElementById('step1-b').textContent = b;  // Update step1-b with value of 'b'
+                document.getElementById('step1-p').textContent = p;  // Update step1-p with value of 'p'
+            
+                // Send the values to the server via fetch
+                fetch('/check_condition', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ a: a, b: b, p: p })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        alert("The values of p, a, b are valid.");
+                    } else {
+                        alert("The values of p, a, b are invalid.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });            
+        
+            // Send a request to get a random point G on the curve
+            document.getElementById('form_curve_setting').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+            
+                fetch('/random_G', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ a: a, b: b, p: p })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);  // Log the response to verify the data
+            
+                    // Check if Gx and Gy are valid numbers before updating the UI
+                    const Gx = parseInt(data.Gx);
+                    const Gy = parseInt(data.Gy);
+            
+                    // Check if Gx and Gy are valid (i.e., not NaN)
+                    if (!isNaN(Gx) && !isNaN(Gy)) {
+                        document.getElementById('step2-x').innerText = Gx;
+                        document.getElementById('step2-y').innerText = Gy;
+                    } else {
+                        // Display an error message if Gx or Gy are invalid
+                        document.getElementById('step2-x').innerText = 'Invalid Gx';
+                        document.getElementById('step2-y').innerText = 'Invalid Gy';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+            
+            // Send a request to check if a point G belongs to the curve
+            document.getElementById('form_point_setting').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const x = parseInt(document.getElementById('x').value);
+                const y = parseInt(document.getElementById('y').value);
+        
+                fetch('/check_G', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p: p, a: a, b: b, x: x, y: y })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        alert("The point belongs to the curve.");
+                        document.getElementById('step2-x').innerText = x;
+                        document.getElementById('step2-y').innerText = y;
+                    } else {
+                        alert("The point does not belong to the curve.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        
+            // Send a request to calculate the order of G
+            document.getElementById('form_point_setting').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const x = parseInt(document.getElementById('x').value);
+                const y = parseInt(document.getElementById('y').value);
+        
+                fetch('/caculate_order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p: p, a: a, b: b, x: x, y: y })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('step2-n').innerText = data.order;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        
+            // Send a request to generate public and private keys
+            document.getElementById('form_private_key').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const x = parseInt(document.getElementById('x').value);
+                const y = parseInt(document.getElementById('y').value);
+                const s = parseInt(document.getElementById('s').value);
+                const n = parseInt(document.getElementById('step2-n').innerText);
+                console.log(n);
+                fetch('/generate_key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({  a: a, b: b, p: p, x: x, y: y, n: n, s: s })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('step3-Px').innerText = data.public_key[0];
+                    document.getElementById('step3-Py').innerText = data.public_key[1];
+                    document.getElementById('step3-Px2').innerText = data.public_key[0];
+                    document.getElementById('step3-Py2').innerText = data.public_key[1];
+                    document.getElementById('step3-p').innerText = p;
+                    document.getElementById('step3-a').innerText = a;
+                    document.getElementById('step3-b').innerText = b;
+                    document.getElementById('step3-n').innerText = parseInt(n);
+                    document.getElementById('step3-G').innerText = `(${G[0]}, ${G[1]})`;  // G là mảng [x, y]
+                    
+                    document.getElementById('step3-s').innerText = s;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        
+            // Gửi yêu cầu để chuyển thông điệp thành điểm trên đường cong elliptic
+            document.getElementById('form_message').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const message = document.getElementById('message').value;
+
+                fetch('/message_to_point', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ a: a, b: b, p: p, message: message }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        document.getElementById('hashed_message').innerText = `(${data.x}, ${data.y})`;
+                    })
+                    .catch((error) => console.error('Error:', error));
+            });
+
+            // Gửi yêu cầu để mã hóa thông điệp
+            document.getElementById('form_random').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const G = [
+                    parseInt(document.getElementById('x').value),
+                    parseInt(document.getElementById('y').value),
+                ];
+                const Px = parseInt(document.getElementById('step3-Px').innerText);
+                const Py = parseInt(document.getElementById('step3-Py').innerText);
+                const n = parseInt(document.getElementById('step2-n').innerText); // Lấy giá trị n
+                const public_key = [n, G, [Px, Py]];
+                const message = document.getElementById('message').value;
+                const k = parseInt(document.getElementById('k').value);
+            
+                fetch('/encrypt-elip', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        a: a,
+                        b: b,
+                        p: p,
+                        G: G,
+                        n: n,
+                        message: message,
+                        k: k,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        document.getElementById('step4-x').innerText = G[0];
+                        document.getElementById('step4-y').innerText = G[1];
+                        document.getElementById('step4-k').innerText = k;
+                        document.getElementById('step4-C1x').innerText = data.C1[0];
+                        document.getElementById('step4-C1y').innerText = data.C1[1];
+                        document.getElementById('step4-C1x2').innerText = data.C1[0];
+                        document.getElementById('step4-C1y2').innerText = data.C1[1];
+                        document.getElementById('step4-hashed_message').innerText =
+                        document.getElementById('hashed_message').innerText;
+                        document.getElementById('step4-Px').innerText = Px;
+                        document.getElementById('step4-Py').innerText = Py;
+                        document.getElementById('step4-p').innerText = p;
+                        document.getElementById('step4-C2x').innerText = data.C2[0];
+                        document.getElementById('step4-C2y').innerText = data.C2[1];
+                        document.getElementById('step4-C2x2').innerText = data.C2[0];
+                        document.getElementById('step4-C2y2').innerText = data.C2[1];
+                    })
+                    .catch((error) => console.error('Error:', error));
+            });
+            
+
+        
+            // Send a request to decrypt the message
+            document.getElementById('form_random').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const p = parseInt(document.getElementById('p').value);
+                const a = parseInt(document.getElementById('a').value);
+                const b = parseInt(document.getElementById('b').value);
+                const G = [
+                    parseInt(document.getElementById('x').value),
+                    parseInt(document.getElementById('y').value),
+                ];
+                const n = parseInt(document.getElementById('step2-n').innerText); // Lấy giá trị n
+                const C1x = parseInt(document.getElementById('C1x').innerText);
+                const C1y = parseInt(document.getElementById('C1y').innerText);
+                const C2x = parseInt(document.getElementById('C2x').innerText);
+                const C2y = parseInt(document.getElementById('C2y').innerText);
+                const C1 = [C1x, C1y];
+                const C2 = [C2x, C2y];
+                const s = parseInt(document.getElementById('s').innerText);
+        
+                fetch('/decrypt-elip', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ a: a, b: b, p: p, G: G, n: n, C1: C1, C2: C2, s: s})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('step5-M').innerText = data.decrypted_message;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+        
     </body>
 </html>
