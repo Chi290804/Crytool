@@ -10,29 +10,46 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <!-- link to homescreen -->
-          <a class="nav-link" href="homescreen.html">Home</a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+              RSA
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/">RSA</a></li>
+                <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/rsa-signature">RSA Digital Signature</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-          <!-- link to rsa -->
-          <a class="nav-link" href="rsa_screen.html">RSA</a>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+              ElGammal
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/elgammal">Elgammal</a></li>
+                <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/elgammal-signature">Elgammal Digital Signature</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-          <!-- link to elgammal -->
-          <a class="nav-link" href="elgammal.html">ElGammal</a>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+              Elliptic
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/elliptic">ECC</a></li>
+                <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/elliptic-signature">ECC Digital Signature</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-          <!-- link to eliptic -->
-          <a class="nav-link" href="elliptic.html">Elliptic</a>
-        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
             Fundamentals
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="euclid.html">Euclid algorithm</a></li>
-            <li><a class="dropdown-item" href="primality.html">Primality test</a></li>
+            <li><a class="dropdown-item" href="/euclid">Euclid algorithm</a></li>
+            <li><a class="dropdown-item" href="/primality">Primality test</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="other.html">Something else here</a></li>
           </ul>

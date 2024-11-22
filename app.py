@@ -10,13 +10,25 @@ app = Flask(__name__)
 def rsa():
     return render_template('rsa_screen.html')
 
+@app.route('/rsa-signature')
+def rsaSign():
+    return render_template('rsa_signature.html')
+
 @app.route('/elgammal')
 def elgammal():
     return render_template('elgammal.html')
 
+@app.route('/elgammal-signature')
+def elgammalSign():
+    return render_template('elgamal_signature.html')
+
 @app.route('/elliptic')
 def elliptic():
     return render_template('elliptic.html')
+
+@app.route('/elliptic-signature')
+def ellipticSign():
+    return render_template('elliptic_signature.html')
 
 @app.route('/euclid')
 def euclid():
