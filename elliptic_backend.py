@@ -263,8 +263,7 @@ def decrypt_message(a, b, p, G, n, encrypted_message, s):
 
 # Thông số đường cong
 a, b, p = 1, 6, 11
-G = (2, 7)
-n = 5
+G = (3, 5)
 message = "HELLO"
 
 # 1. Kiểm tra điều kiện
@@ -281,8 +280,8 @@ random_point = get_random_point_on_curve(a, b, p)
 print("Điểm ngẫu nhiên trên đường cong:", random_point)
 
 # 5. Tính bậc của điểm G
-order = calculate_order_of_point(a, b, p, G)
-print("Bậc của G:", order)
+n = calculate_order_of_point(a, b, p, G)
+print("Bậc của G:", n)
 
 # 6. Tạo khóa
 private_key, public_key = generate_keys(a, b, p, G, n, s = 1811)

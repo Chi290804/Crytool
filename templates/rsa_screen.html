@@ -323,7 +323,7 @@
         const eValue = parseInt(document.getElementById("e").textContent); // Chuyển đổi e thành số nguyên
         const n = parseInt(document.getElementById("n").textContent); // Chuyển đổi n thành số nguyên
 
-        const response = await fetch("/encrypt", {
+        const response = await fetch("/encrypt-rsa", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: m, public_key: [n, eValue] }),
@@ -340,7 +340,7 @@
         const d = document.getElementById("d").textContent;
         const n = document.getElementById("n").textContent;
 
-        const response = await fetch("/decrypt", {
+        const response = await fetch("/decrypt-rsa", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ encrypted_message: c, private_key: [n, d] }),

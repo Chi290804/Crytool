@@ -57,7 +57,7 @@ def generate_keys():
         'private_key': private_key
     })
 
-@app.route('/encrypt', methods=['POST'])
+@app.route('/encrypt-rsa', methods=['POST'])
 def encrypt():
     data = request.json
     message = data.get('message')  # Lấy message từ JSON
@@ -87,66 +87,97 @@ def decrypt():
     return jsonify({'decrypted_message': decrypted_message})
 
 #@app.route('/tên API', methods=['POST'])
-@app.route('/generate_elgamal_keys', methods=['POST'])
-def generate_elgamal_keys():
+@app.route('/calculate_alpha', methods=['POST'])
+def calculate():
+    data = request.json
+    p = data.get('p')
+    if not p:
+        return jsonify({"error": "Missing parameter 'p'"}), 400
+
     try:
-        # Giá trị nhận từ HTML
-        data = request.json
-        
-        # Lấy giá trị p và a từ data
-        p = data.get('valueP')
-        a = data.get('a')
+        alpha = elgammal_backend.primitive_root(p)
+        return jsonify({"alpha": alpha})
+    except ValueError:
+        return jsonify({"error": "No primitive root for given p"}), 400
 
-        # Kiểm tra xem p và a có tồn tại và có thể chuyển sang số nguyên không
-        if p is None or not p.isdigit():
-            return jsonify({'error': 'p must be a valid integer'}), 400
-        if a is None or not a.isdigit():
-            return jsonify({'error': 'a must be a valid integer'}), 400
+# Tính beta
+@app.route('/calculate_beta', methods=['POST'])
+def calculate_beta():
+    data = request.json
+    p = data.get('p')
+    alpha = data.get('alpha')
+    a = data.get('a')
+    if not all([p, alpha, a]):
+        return jsonify({"error": "Missing parameters 'p', 'alpha', or 'a'"}), 400
 
-        # Chuyển p và a sang kiểu int
-        p = int(p)
-        a = int(a)
-
-        # Kiểm tra số nguyên tố của p
-        if not elgammal_backend.is_prime(p):
-            return jsonify({'error': 'p must be a prime number'}), 400
-
-        # Sử dụng input để tạo khóa ElGamal
-        public_key, private_key = elgammal_backend.generate_elgamal_keys(p, a)
-
-        # Trả về kết quả cho client
-        return jsonify({
-            'public_key': public_key,
-            'private_key': private_key,
-        })
-
+    try:
+        beta = pow(alpha, a, p)
+        return jsonify({"beta": beta})
     except Exception as e:
-        # Xử lý lỗi chung
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
-
-@app.route('/hashing', methods=['POST'])
-def hashing():
+# Băm message
+@app.route('/hash_message', methods=['POST'])
+def hash_message():
     data = request.json
     message = data.get('message')
-    message_int = elgammal_backend.hashing(message)
-    return jsonify({'message_int': message_int})
-@app.route('/encrypt_elgamal', methods=['POST'])
-def encrypt_elgamal():
-    data = request.json
-    message = data.get('message').upper()
-    public_key = tuple(data.get('public_key'))
-    c1, c2 = elgammal_backend.encrypt(message, public_key)
-    return jsonify({'c1': c1, 'c2': c2})
+    if not message:
+        return jsonify({"error": "Missing parameter 'message'"}), 400
 
-@app.route('/decrypt_elgamal', methods=['POST'])
-def decrypt_elgamal():
+    def hashing(txt):
+        ans = 0
+        for c in txt:
+            ans = ans * 26 + (ord(c) - ord('A'))
+        return ans
+
+    hashed_message = hashing(message)
+    return jsonify({"hashed_message": hashed_message})
+
+# Mã hóa ElGamal
+@app.route('/encrypt_elgammal', methods=['POST'])
+def encrypt_elgammal():
     data = request.json
-    c1 = int(data.get('c1'))
-    c2 = int(data.get('c2'))
-    private_key = tuple(data.get('private_key'))
-    message = elgammal_backend.decrypt((c1, c2), private_key)
-    return jsonify({'message': message})
+    p = data.get('p')
+    alpha = data.get('alpha')
+    beta = data.get('beta')
+    k = data.get('k')
+    message = data.get('message')
+
+    if not all([p, alpha, beta, k, message]):
+        return jsonify({"error": "Missing parameters 'p', 'alpha', 'beta', 'k', or 'message'"}), 400
+
+    try:
+        def hashing(txt):
+            ans = 0
+            for c in txt:
+                ans = ans * 26 + (ord(c) - ord('A'))
+            return ans
+
+        hash_value = hashing(message)
+        y1 = pow(alpha, k, p)
+        y2 = (hash_value * pow(beta, k, p)) % p
+        return jsonify({"encrypted_message": (y1, y2)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Giải mã ElGamal
+@app.route('/decrypt_elgammal', methods=['POST'])
+def decrypt_elgammal():
+    data = request.json
+    p = data.get('p')
+    alpha = data.get('alpha')
+    a = data.get('a')
+    encrypted_message = data.get('encrypted_message')
+
+    if not all([p, alpha, a, encrypted_message]):
+        return jsonify({"error": "Missing parameters 'p', 'alpha', 'a', or 'encrypted_message'"}), 400
+
+    try:
+        y1, y2 = encrypted_message
+        decrypted_message = (y2 * pow(y1, p - a - 1, p)) % p
+        return jsonify({"decrypted_message": decrypted_message})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 #ELLIPTIC_CURVE
 @app.route('/check_condition', methods=['POST'])
