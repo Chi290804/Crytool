@@ -130,7 +130,7 @@
 
                         <hr>
                         <!-- connect here: id="p" and id="alpha" -->
-                        <p><i>p</i> = <span id="display-p"></span> has a primitive root: <i>&alpha;</i> = <span id="alpha"></span></p>
+                        <p><i>p</i> = <span id="step2-p"></span> has a primitive root: <i>&alpha;</i> = <span id="step2-alpha"></span></p>
                     </div>
 
                     <div class="card-footer text-body-secondary">
@@ -193,11 +193,11 @@
                       <div class="card-body">
                           <h5>Public key:</h5>
         
-                          <p><i>(<i>p</i>, <i>&alpha;</i>, <i>&beta;</i>)</i> = <span id="public-key"></span></p>
+                          <p><i>(<i>p</i>, <i>&alpha;</i>, <i>&beta;</i>)</i> = (<span id="step5-p"></span>, <span id="step5-alpha"></span>, <span id="step5-beta"></span>)</p>
 
                           <hr>
                           <h5>Private key:</h5>
-                          <p><i>(<i>p</i>, <i>&alpha;</i>, <i>a</i>)</i> = <span id="public-key"></span></p>
+                          <p><i>(<i>p</i>, <i>&alpha;</i>, <i>a</i>)</i> = (<span id="step5-p-2"></span>, <span id="step5-alpha-2"></span>, <span id="step5-a"></span>)</p>
                       </div>
 
                       <div class="card-footer text-body-secondary">
@@ -229,7 +229,7 @@
                               </div>
                               
                               <!-- connect here: id="hashed_message" -->
-                              <p>Hashed message: <span id="hashed_message">18112004</span></p>
+                              <p>Hashed message: <span id="hashed_message"></span></p>
                           </form>
 
                           <hr>
@@ -260,15 +260,15 @@
                           <h5 class="mt-3">Encrypt the message</h5>
 
                           <!-- connect here: id="alpha", id="k", id="c1", id="p" -->
-                          <p><i>c1</i> = <i><span id="alpha">2</span><sup><span id="k">4</span></sup> mod <span id="p">11</span></i></p>
-                          <p><i>c1</i> = <span id="c1">5</span></p>
+                          <p><i>c1</i> = <i><span id="step6-alpha">2</span><sup><span id="step6-k">4</span></sup> mod <span id="step6-p">11</span></i></p>
+                          <p><i>c1</i> = <span id="step6-c1">5</span></p>
 
                           <!-- connect here: id="beta", id="k", id="hashed_message", id="c2", id="p" -->
                           <p><i>c2</i> = <i><span id="hashed_message">18112004</span> * <span id="beta">8</span><sup><span id="k">4</span></sup> mod <span id="p">11</span></i></p>
-                          <p><i>c2</i> = <span id="c2">4</span></p>
+                          <p><i>c2</i> = <span id="step6-c2">4</span></p>
                           
                           <!-- connect here: id="c1", id="c2" -->
-                          <h6 class="fw-bold">&rArr; Encrypted message: <i>(c1, c2) = (<span id="c1">5</span>, <span id="c2">4</span>)</i></h6>
+                          <h6 class="fw-bold">&rArr; Encrypted message: <i>(c1, c2) = (<span id="step6-c1-2">5</span>, <span id="step6-c2-2">4</span>)</i></h6>
 
                       </div>
                   </div>
@@ -283,8 +283,8 @@
                           <h5>Decrypt the message using the private key:</h5>
                           <p><i>m = c2 * c1 <sup>p - a - 1</sup> mod p</i></p>
                           <!-- connect here: id="c1", id="c2", id="p", id="a" -->
-                          <p><i>m = <span id="c2">4</span> * <span id="c1">5</span> <sup><span id="p">11</span> - <span id="a">3</span> - 1</sup> mod <span id="p">11</span></i></p>
-                          <p><i>m = <span id="m">18112004</span></i></p>
+                          <p><i>m = <span id="step7-c2">4</span> * <span id="step7-c1">5</span> <sup><span id="step7-p">11</span> - <span id="step7-a">3</span> - 1</sup> mod <span id="step7-p-2">11</span></i></p>
+                          <p><i>m = <span id="step7-m">18112004</span></i></p>
 
                       </div>
                     </div>
@@ -297,90 +297,106 @@
             </div>
         </footer>
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                // Step 1: setting prime number
-                const primesForm = document.getElementById("form_prime_setting");
-                primesForm.addEventListener("submit", (e) => {
-                    e.preventDefault();
-        
-                    // Lấy giá trị p từ form
-                    const valuep = document.getElementById("p").value;
-        
-                    // Kiểm tra giá trị hợp lệ
-                    if (!valuep || isNaN(valuep)) {
-                        alert("Vui lòng nhập một số nguyên tố hợp lệ.");
-                        return;
-                    }
-        
-                    // Hiển thị giá trị p và alpha trong DOM
-                    const displayP = document.querySelector("#display-p");
-                    const alpha = document.querySelector("#alpha");
-        
-                    if (displayP && alpha) {
-                        displayP.textContent = valuep;
-                        alpha.textContent = 2; // Giá trị mặc định
-                    } else {
-                        console.error("Không tìm thấy phần tử #display-p hoặc #alpha trong DOM.");
-                    }
+            document.getElementById("form_prime_setting").addEventListener("submit", (e) => {
+                e.preventDefault();
+            
+                const p = parseInt(document.getElementById("p").value);
+            
+                fetch('/calculate_alpha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p: p })
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById('step2-p').innerText = p;
+                    document.getElementById('step2-alpha').innerText = data.alpha;
                 });
-        
-                // Step 3: Choose a
-                const aForm = document.getElementById("form_a_setting"); // Sửa tên biến
-                aForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    
-                    let valueP = document.getElementById("p").value; // Lấy giá trị p từ DOM
-                    const a = document.getElementById("a").value;
-
-                    // Kiểm tra xem valueP có phải là một số nguyên không
-                    if (!Number.isInteger(parseInt(valueP)) || parseInt(valueP) <= 1) {
-                        alert("Vui lòng nhập một số nguyên dương hợp lệ cho p.");
-                        return; // Dừng việc gửi dữ liệu nếu giá trị không hợp lệ
-                    }
-
-                    // Kiểm tra xem a có phải là một số nguyên hợp lệ không
-                    if (!Number.isInteger(parseInt(a)) || parseInt(a) <= 1) {
-                        alert("Vui lòng nhập một số nguyên dương hợp lệ cho a.");
-                        return; // Dừng việc gửi dữ liệu nếu giá trị không hợp lệ
-                    }
-
-                    // Chuyển valueP và a thành số nguyên
-                    valueP = parseInt(valueP);
-                    const valueA = parseInt(a);
-
-                    try {
-                        const response = await fetch("/generate_elgamal_keys", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ valueP, valueA }),
-                        });
-
-                        if (!response.ok) {
-                            throw new Error("API trả về lỗi: " + response.statusText);
-                        }
-
-                        const data = await response.json();
-
-                        // Kiểm tra xem data có chứa public_key không và có đủ phần tử không
-                        if (data.public_key && data.public_key.length >= 3) {
-                            // Cập nhật giá trị trong DOM
-                            document.querySelector("#step4-p").textContent = valueP; // Sửa đúng vị trí
-                            document.querySelector("#step4-a").textContent = valueA;
-                            document.querySelector("#step4-alpha").textContent = 2;
-                            document.querySelector("#step4-beta").textContent = data.public_key[2];
-                            document.querySelector("#public-key").textContent = `(${data.public_key[0]}, ${data.public_key[1]}, ${data.public_key[2]})`;
-                            document.querySelector("#private-key").textContent = `(${data.private_key[0]}, ${data.private_key[1]}, ${data.private_key[2]})`;
-                        } else {
-                            console.error("Dữ liệu public_key không hợp lệ.");
-                            alert("Dữ liệu khóa công khai không hợp lệ.");
-                        }
-                    } catch (error) {
-                        console.error("Có lỗi xảy ra khi gọi API:", error);
-                        alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
-                    }
-                });
-
             });
+            
+            document.getElementById("form_a_setting").addEventListener("submit", (e) => {
+                e.preventDefault();
+            
+                const p = parseInt(document.getElementById("step2-p").innerText);
+                const alpha = parseInt(document.getElementById("step2-alpha").innerText);
+                const a = parseInt(document.getElementById("a").value);
+            
+                fetch('/calculate_beta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p: p, alpha: alpha, a: a })
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById('step4-alpha').innerText = alpha;
+                    document.getElementById('step4-a').innerText = a;
+                    document.getElementById('step4-p').innerText = p;
+                    document.getElementById('step4-beta').innerText = data.beta;
+
+                    document.getElementById('step5-alpha').innerText = alpha;
+                    document.getElementById('step5-alpha-2').innerText = alpha;
+                    document.getElementById('step5-a').innerText = a;
+                    document.getElementById('step5-p').innerText = p;
+                    document.getElementById('step5-p-2').innerText = p;
+                    document.getElementById('step5-beta').innerText = data.beta;
+                });
+            });
+            
+            document.getElementById("form_message").addEventListener("submit", (e) => {
+                e.preventDefault();
+            
+                const message = document.getElementById("message").value;
+            
+                fetch('/hash_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("hashed_message").innerText = data.hashed_message;
+                });
+            });
+            
+            document.getElementById("form_k_setting").addEventListener("submit", (e) => {
+                e.preventDefault();
+            
+                const p = parseInt(document.getElementById("step4-p").innerText);
+                const alpha = parseInt(document.getElementById("step4-alpha").innerText);
+                const beta = parseInt(document.getElementById("step4-beta").innerText);
+                const k = parseInt(document.getElementById("k").value);
+                const message = document.getElementById("hashed_message").innerText;
+                const a = parseInt(document.getElementById("a").value);
+
+                fetch('/encrypt_elgammal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p: p, alpha: alpha, beta: beta, k: k, message: message })
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    const [c1, c2] = data.encrypted_message;
+                    document.getElementById("step6-c1").innerText = c1;
+                    document.getElementById("step6-c2").innerText = c2;
+                    document.getElementById("step6-c1-2").innerText = c1;
+                    document.getElementById("step6-c2-2").innerText = c2;
+                    document.getElementById("step7-c1").innerText = c1;
+                    document.getElementById("step7-c2").innerText = c2;
+                    document.getElementById("step7-p").innerText = p;
+                    document.getElementById("step7-p-2").innerText = p;
+                    document.getElementById("step7-a").innerText = a;
+                    document.getElementById("step7-m").innerText = message;
+                });
+            });
+            
         </script>        
     </body>
 </html>
