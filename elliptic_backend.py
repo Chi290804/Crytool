@@ -261,6 +261,58 @@ def decrypt_message(a, b, p, G, n, encrypted_message, s):
     decrypted_point = ecc.decrypt(C1, C2, s)
     return decrypted_point
 
+def sign_message(a, b, p, G, n, h, k, s):
+    curve = EllipticCurve(a, b, p)
+    ecc = EllipticCurveCryptography(curve, G, n)
+    # Map thông điệp thành điểm trên đường cong (nếu cần)  
+    # Tính điểm R = k * G
+    R = curve.multiply_point(G, k)
+    r = R[0] % n  # r là hoành độ của R (mod n)
+    if r == 0:
+        raise ValueError("R[0] mod n == 0, chọn k khác.")
+
+    # Tính giá trị u (signature)
+    k_inv = pow(k, -1, n)  # k^-1 mod n
+    u = (h + s * r) * k_inv % n  # u = (h + s * r) * k^-1 mod n
+    if u == 0:
+        raise ValueError("u == 0, chọn k khác.")
+    
+    return (r, u)
+
+def verify_signature(a, b, p, G, n, message, h, signature, B):
+    """
+    Xác minh chữ ký số.
+    Input:
+        a, b, p: Các tham số đường cong elliptic.
+        G: Điểm cơ sở.
+        n: Bậc của điểm cơ sở.
+        message: Thông điệp cần xác minh.
+        signature: Chữ ký (r, u).
+        B: Khóa công khai (public key).
+    Output:
+        True nếu chữ ký hợp lệ, False nếu không.
+    """
+    r, u = signature
+    curve = EllipticCurve(a, b, p)
+    
+    if not (1 <= r < n and 1 <= u < n):
+        return False
+
+    w = pow(u, -1, n)  # w = u^-1 mod n
+
+    # Tính u₁ và u₂
+    u1 = h * w % n
+    u2 = r * w % n
+
+    # Tính điểm P = u₁ * G + u₂ * B
+    P = curve.add_points(
+        curve.multiply_point(G, u1),
+        curve.multiply_point(B, u2)
+    )
+    
+    # Kiểm tra chữ ký hợp lệ nếu r ≡ P.x mod n
+    return (P[0] % n == r), w, u1, u2, P
+
 # Thông số đường cong
 a, b, p = 1, 6, 11
 G = (3, 5)

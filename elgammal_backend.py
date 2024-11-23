@@ -39,6 +39,7 @@ def factorization(n):
 # %%
 class ElGammal():
     
+    #Khởi tạo gồm p, alpha, a
     def __init__(self, p, alpha = -1, a=100000):
         
         self.p = p
@@ -86,12 +87,13 @@ import math
 
 class participant():
     
-    def __init__(self, letter, signature, p, alpha = -1, a = 100000):
+    
+    def __init__(self, letter, p, alpha = -1, a = 100000):
         
         self.elgammal_system = ElGammal(p = p, alpha = alpha, a = a)
         self.p = p
         self.letter = letter
-        self.signature = signature
+        self.signature = hashing(self.letter)
         
     def find_coprime(self):
         
@@ -136,46 +138,44 @@ class participant():
 # %%
 class ElGammal_signature_system():
     
-    def __init__(self, p1, p2, alpha1 = -1, alpha2 = -1):
-        
-        self.bob = participant(letter="Mai mai khong noi nao, voi anh la xa xoi", signature="Nguyen Huu The", p=p1, alpha=alpha1)
-        self.alice = participant(letter="Dau noi chan troi, roi anh se di tim", signature="Mai Xuan Truong", p=p2, alpha=alpha2)
+    def __init__(self, p1, p2, letter1, letter2, alpha1 = -1, alpha2 = -1):
+        self.participant1 = participant(letter1, p=p1, alpha=alpha1)  # Tạo participant 1 (Alice)
+        self.participant2 = participant(letter2, p=p2, alpha=alpha2)  # Tạo participant 2 (Bob)
     
-    #Simulate the process of encrypting and forwarding letter from a -> b
-    #then b decrypts encrypted letter from a
-    def send_and_receive(self, a, b):
+    # Mô phỏng quá trình gửi và nhận chữ ký giữa hai người tham gia
+    def send_and_receive(self, sender, receiver):
+        print(f"\n--- Quá trình ký và gửi thông điệp từ {sender.letter} đến {receiver.letter} ---")
         
-        #Sender
-        print(f"Sender: {a.signature}")
-        print(f"Content: {a.letter}")
+        # Người gửi tạo chữ ký và mã hóa thông điệp
+        encrypted_signature = sender.encrypt_signature()
+        encrypted_letter = sender.encrypt_letter(receiver.elgammal_system)
         
-        print(f"Hashed signature: {hashing(a.signature)}")
-        print(f"Hashed letter: {hashing(a.letter)}")
+        print(f"Thông điệp gốc: {sender.letter}")
+        print(f"Chữ ký được mã hóa: {encrypted_signature}")
+        print(f"Thông điệp được mã hóa: {encrypted_letter}")
         
-        encrypted_signature = a.encrypt_signature()
-        encrypted_letter = a.encrypt_letter(another = b.elgammal_system)
+        # Người nhận giải mã thông điệp và xác minh chữ ký
+        decrypted_letter = receiver.decrypt_letter(encrypted_letter)
+        is_valid_signature = receiver.decrypt_signature(
+            another_public_key=sender.elgammal_system.get_public_key(),
+            another_signature=sender.letter,
+            encrypted_signature=encrypted_signature
+        )
         
-        print(f"Encrypted signature: {encrypted_signature}")
-        print(f"Encrypted letter: {encrypted_letter}")
-        
-        #Receiver
-        print(f"Receiver: {b.signature}")
-        
-        decrypted_signature = b.decrypt_signature(another_public_key = a.elgammal_system.get_public_key(), another_signature = a.signature, encrypted_signature = encrypted_signature)
-        decrypted_letter = b.decrypt_letter(encrypted_letter = encrypted_letter)
-        
-        print(f"Decrypted signature: {decrypted_signature}")
-        print(f"Decrypted letter: {decrypted_letter}")
+        print(f"Thông điệp giải mã: {chr(decrypted_letter + ord('A'))}")
+        print(f"Kết quả xác minh chữ ký: {'Hợp lệ' if is_valid_signature else 'Không hợp lệ'}")
     
+    # Trường hợp 1: Participant 1 gửi cho Participant 2
     def case_1(self):
-        self.send_and_receive(self.bob, self.alice)
+        self.send_and_receive(self.participant1, self.participant2)
     
+    # Trường hợp 2: Participant 2 gửi cho Participant 1
     def case_2(self):
-        self.send_and_receive(self.alice, self.bob)
+        self.send_and_receive(self.participant2, self.participant1)
         
   
 
-# %%
+
 # p1 = 52786995629017990078783375961280944761228208113475649926725407513191655174698844733077428475647679927182368705701299295149783307413169773988962304654470083227836242729953033004142207979567298543758572036428438833505230009334283511526180873145779
 # alpha1 = 2
 
@@ -183,7 +183,7 @@ class ElGammal_signature_system():
 # alpha2 = 3
 
 # # %%
-# OwO = ElGammal_signature_system(p1 = p1, p2 = p2, alpha1 = alpha1, alpha2 = alpha2)
+# OwO = ElGammal_signature_system(p1 = p1, p2 = p2, letter1 = "alice", letter2 = "bob", alpha1 = alpha1, alpha2 = alpha2)
 
 # # %%
 # OwO.case_1()

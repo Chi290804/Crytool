@@ -139,26 +139,26 @@
 
                     <!-- Primality test -->
                     <div class="card mt-5">
-                        <div class="card-header text-center">
-                            <h4>Primality Testing</h4>
-                        </div>
-                        <div class="card-body">
-                            <!-- connect here: id="input_form" -->
-                            <form id="input_form"></form>
-                                <div class="mb-3">
-                                    <label for="number" class="form-label">Enter a number</label>
-                                    <!-- connect here: id="number" name="number" -->
-                                    <input type="number" class="form-control" id="number" name="number" placeholder="1811" required>
-                                </div>
-                                <!-- connect here: handling submission -->
-                                <button type="submit" class="btn btn-primary">Test</button>
-                            </form>
-
-                            <hr>
-                            <!-- connect here: id="number" -->
-                            <p><span id="number">1811</span> is a prime number.</p>
-                        </div>
-                    </div>
+                      <div class="card-header text-center">
+                          <h4>Primality Testing</h4>
+                      </div>
+                      <div class="card-body">
+                          <!-- connect here: id="input_form" -->
+                          <form id="input_form">
+                              <div class="mb-3">
+                                  <label for="number" class="form-label">Enter a number</label>
+                                  <!-- connect here: id="number" name="number" -->
+                                  <input type="number" class="form-control" id="number1" name="number" placeholder="1811" required>
+                              </div>
+                              <!-- connect here: handling submission -->
+                              <button type="submit" class="btn btn-primary">Test</button>
+                          </form>
+                  
+                          <hr>
+                          <!-- connect here: id="number" -->
+                          <p><span id="number12"></span></p>
+                      </div>
+                  </div>
                     
                     <!-- Prime generation -->
                     <div class="card mt-5">
@@ -173,12 +173,12 @@
                                 <div class="mb-3">
                                     <label for="a" class="form-label">Enter the lower bound</label>
                                     <!-- connect here: id="a" name="a" -->
-                                    <input type="number" class="form-control" id="a" name="a" placeholder="1" required>
+                                    <input type="number" class="form-control" id="a1" name="a" placeholder="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="b" class="form-label">Enter the upper bound</label>
                                     <!-- connect here: id="b" name="b" -->
-                                    <input type="number" class="form-control" id="b" name="b" placeholder="1000" required>
+                                    <input type="number" class="form-control" id="b1" name="b" placeholder="1000" required>
                                 </div>
                                 <!-- connect here: handling submission -->
                                 <button type="submit" class="btn btn-primary">Generate</button>
@@ -199,5 +199,79 @@
               INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
             </div>
         </footer>
+        <script>
+          // Primality test handler
+          document.getElementById("input_form").addEventListener("submit", async function(event) {
+              event.preventDefault(); // Prevent form submission
+        
+              // Get number from input
+              const number = parseInt(document.getElementById("number1").value);
+        
+              // Check if the number is valid
+              if (isNaN(number)) {
+                  alert("Please enter a valid number!");
+                  return;
+              }
+        
+              // Send request to the server to check if the number is prime
+              try {
+                  const response = await fetch('/prime_check', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ number: number })
+                  });
+        
+                  const data = await response.json();
+                  
+                  // Update the UI with the result
+                  document.getElementById("number12").innerText = data.is_prime 
+                      ? `${number} is a prime number.` 
+                      : `${number} is not a prime number.`;
+              } catch (error) {
+                  console.error('Error:', error);
+              }
+          });
+        
+          // Prime generation handler
+        document.getElementById("range_form").addEventListener("submit", async function(event) {
+              event.preventDefault(); // Prevent form submission
+        
+              // Get range values from input
+              const a = parseInt(document.getElementById("a1").value);
+              const b = parseInt(document.getElementById("b1").value);
+        
+              // Check if the values are valid
+              if (isNaN(a) || isNaN(b) || a >= b) {
+                  alert("Please enter a valid range where a < b.");
+                  return;
+              }
+        
+              // Update range display
+              document.getElementById("a").textContent = a;
+              document.getElementById("b").textContent = b;
+        
+              // Send request to the server to generate a prime number within the range
+              try {
+                  const response = await fetch('/prime_generation', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ a: a, b: b })
+                  });
+        
+                  const data = await response.json();
+                  
+                  // Update the UI with the generated prime number
+                  document.getElementById("prime").innerText = data.prime_number;
+              } catch (error) {
+                  console.error('Error:', error);
+              }
+          });
+        </script>
+        
+      
     </body>
 </html>

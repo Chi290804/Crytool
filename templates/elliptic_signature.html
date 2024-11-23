@@ -169,15 +169,6 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 row">
-                                    <label for="signature1" class="col-sm-2 col-form-label">Signature</label>
-                                    <div class="col-sm-10">
-                                        <!-- connect here: id="signature1" -->
-                                        <input type="text" class="form-control" id="signature1" placeholder="Bob" required />
-                                    </div>
-                                </div>
-
-
                                 <div class="d-flex justify-content-begin">
                                     <!-- connect here: handle form submission -->
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -250,15 +241,6 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 row">
-                                    <label for="signature2" class="col-sm-2 col-form-label">Signature</label>
-                                    <div class="col-sm-10">
-                                        <!-- connect here: id="signature2" -->
-                                        <input type="text" class="form-control" id="signature2" placeholder="Alice" required />
-                                    </div>
-                                </div>
-
-
                                 <div class="d-flex justify-content-begin">
                                     <!-- connect here: handle form submission -->
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -284,17 +266,18 @@
                                 <div class="card-body">
                                     <p class="card-text">Bob sends the message to Alice.</p>
                                     <!-- conect here: id="signature1" -->
-                                    <p class="card-text">Sender: <span id="signature1">Bob</span></p>
+                                    <p class="card-text">Sender: </p>
                                     <!-- connect here: id="message1" -->
-                                    <p class="card-text">Message: <span id="message1">Hello Alice</span></p>
-                                    <!-- connect here: id="hashed_signature1" -->
-                                    <p class="card-text">Hashed signature: <span id="hashed_signature1">?</span></p>
+                                    <p class="card-text">Message: <span id="message12">Hello Alice</span></p>
                                     <!-- connect here: id="hashed_message1" -->
                                     <p class="card-text">Hashed message: <span id="hashed_message1">?</span></p>
                                     <!-- connect here: id="encrypted_signature1" -->
-                                    <p class="card-text">Encrypted signature: <span id="encrypted_signature1">?</span></p>
+                                    <p class="card-text">Signature: <span id="signature1">?</span></p>
                                     <!-- connect here: id="encrypted_message1" -->
                                     <p class="card-text">Encrypted message: <span id="encrypted_message1">?</span></p>
+                                    <p class="card-text">Bob public key: <span id="Bob_public_key">(n, e)</span></p>
+
+                                    <p class="card-text">Bob private key: <span id="Bob_private_key">(n, d)</span></p>
                                 </div>
                             </div>
 
@@ -307,9 +290,24 @@
                                     <!-- connect here: id="signature2" -->
                                     <p class="card-text">Receiver: <span id="signature2">Alice</span></p>
                                     <!-- connect here: id="signature_authentication1" -->
-                                    <p class="card-text">Signature authentication: <span id="signature_authentication1">Invalid</span></p>
-                                    <!-- connect here: id="decrypted_message1" -->
                                     <p class="card-text">Decrypt message: <span id="decrypted_message1">?</span></p>
+                                    <p class="card-text">Signature authentication: <span id="signature_authentication1">Invalid</span></p>
+                                    <p class="card-text"><ul>
+                                        <li>
+                                            <i>u₁ = <span id="h1">h</span> · <span id="w1">w</span> mod <span id="n1">n</span></i>
+                                        </li>
+                                        <li>
+                                            <i>u₂ = <span id="r1">r</span> · <span id="w1">w</span> mod <span id="n1">n</span></i>
+                                        </li>
+                                        
+                                        <li>
+                                            <i>P = <span id="u1">u₁</span> · <span id="G1">G</span> + <span id="u21">u₂</span> · <span id="Q1">Q</span></i>
+                                        </li>
+                                        <li>
+                                            Verify: <i><span id="r_check1">r</span> ≡ <span id="x21">x₂</span> mod <span id="n1">n</span></i>.
+                                        </li>
+                                     </p>
+                                    <!-- connect here: id="decrypted_message1" -->
                                 </div>
                             </div>
 
@@ -335,15 +333,18 @@
                                     <!-- conect here: id="signature2" -->
                                     <p class="card-text">Sender: <span id="signature2">Alice</span></p>
                                     <!-- connect here: id="message2" -->
-                                    <p class="card-text">Message: <span id="message2">Hello Bob</span></p>
+                                    <p class="card-text">Message: <span id="message22">Hello Bob</span></p>
                                     <!-- connect here: id="hashed_signature2" -->
-                                    <p class="card-text">Hashed signature: <span id="hashed_signature2">?</span></p>
                                     <!-- connect here: id="hashed_message2" -->
                                     <p class="card-text">Hashed message: <span id="hashed_message2">?</span></p>
-                                    <!-- connect here: id="encrypted_signature2" -->
-                                    <p class="card-text">Encrypted signature: <span id="encrypted_signature2">?</span></p>
+
+                                    <p class="card-text">Signature: <span id="signature2">?</span></p>
+                                    
                                     <!-- connect here: id="encrypted_message2" -->
                                     <p class="card-text">Encrypted message: <span id="encrypted_message2">?</span></p>
+                                    <p class="card-text">Alice public key: <span id="Alice_public_key">(n, e)</span></p>
+
+                                    <p class="card-text">Alice private key: <span id="Alice_private_key">(n, d)</span></p>
                                 </div>
                             </div>
 
@@ -356,9 +357,23 @@
                                     <!-- connect here: id="signature1" -->
                                     <p class="card-text">Receiver: <span id="signature1">Bob</span></p>
                                     <!-- connect here: id="signature_authentication2" -->
-                                    <p class="card-text">Signature Authentication: <span id="signature_authentication2">Invalid</span></p>
-                                    <!-- connect here: id="decrypted_message2" -->
                                     <p class="card-text">Decrypt message: <span id="decrypted_message2">?</span></p>
+                                    <p class="card-text">Signature authentication: <span id="signature_authentication2">Invalid</span></p>
+                                    <p class="card-text"><ul>
+                                        <li>
+                                            <i>u₁ = <span id="h2">h(M)</span> · <span id="w2">w</span> mod <span id="n2">n</span></i>
+                                        </li>
+                                        <li>
+                                            <i>u₂ = <span id="r2">r</span> · <span id="w2">w</span> mod <span id="n2">n</span></i>
+                                        </li>
+                                        
+                                        <li>
+                                            <i>P = <span id="u12">u₁</span> · <span id="G2">G</span> + <span id="u22">u₂</span> · <span id="Q2">Q</span></i>
+                                        </li>
+                                        <li>
+                                            Verify: <i><span id="r_check2">r</span> ≡ <span id="x22">x₂</span> mod <span id="n2">n</span></i>.
+                                        </li>
+                                     </p>
                                 </div>
                             </div>
                         </div>
@@ -372,6 +387,56 @@
               INT3230E - Cryptography & Information Security: Nguyễn Hữu Thế & Hoàng Kim Chi
             </div>
         </footer>
+        <script>
+            document.querySelector("#system1_setting").addEventListener("submit", async function (e) {
+                e.preventDefault(); // Ngăn chặn reload trang
+            
+                // Lấy giá trị từ form
+                const p = parseInt(document.querySelector("#p1").value);
+                const a = parseInt(document.querySelector("#a1").value);
+                const b = parseInt(document.querySelector("#b1").value);
+                const Gx = parseInt(document.querySelector("#Gx1").value);
+                const Gy = parseInt(document.querySelector("#Gy1").value);
+                const d = parseInt(document.querySelector("#privateKey1").value);
+                const message = document.querySelector("#message1").value;
+            
+                // Tạo request payload
+                const payload = {
+                    p, a, b, Gx, Gy, d, message
+                };
+            
+                try {
+                    // Gửi POST request đến API
+                    const response = await fetch('/sign_elip', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+            
+                    // Nhận phản hồi JSON từ server
+                    const result = await response.json();
+            
+                    // Hiển thị dữ liệu trên giao diện
+                    document.querySelector("#hashed_message1").textContent = result.hashed_message;
+                    document.querySelector("#signature1").textContent = JSON.stringify(result.signature);
+                    document.querySelector("#encrypted_message1").textContent = `${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)}`;
+                    document.querySelector("#Bob_public_key").textContent = JSON.stringify(result.public_key);
+                    document.querySelector("#Bob_private_key").textContent = JSON.stringify(result.private_key);
+                    document.querySelector("#decrypted_message1").textContent = JSON.stringify(result.decrypted_message);
+                    document.querySelector("#h1").textContent = result.u1;
+                    document.querySelector("#w1").textContent = result.u2;
+                    document.querySelector("#n1").textContent = result.n1;
+                    document.querySelector("#u1").textContent = JSON.stringify(result.P);
+                    document.querySelector("#signature_authentication1").textContent = result.v ? "Valid" : "Invalid";
+            
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while processing the request.");
+                }
+            });
+        </script>
     </body>
 
 </html>

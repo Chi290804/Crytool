@@ -373,9 +373,15 @@
                             <!-- connect here: id="M" -->
                             <i>M = (<span id="step5-M">?</span>)</i>
                         </p>
+                        <form id="decrypt">
 
+                            <div class="d-flex justify-content-begin">
+                            <!-- connect here:-->
+                                <button type="submit" class="btn btn-primary">Decrypt</button>
+                            </div>
+                        </form>
                         <!-- connect here: id="M" -->
-                        <h6 class="fw-bold">&rArr; Decrypted message: <i>M = <span id="step5-M">?</span></i></h6>
+                        <h6 class="fw-bold">&rArr; Decrypted message: <i>M = <span id="step5-M2">?</span></i></h6>
                     </div>
                 </div>
             </div>
@@ -621,8 +627,10 @@
 
         
             // Send a request to decrypt the message
-            document.getElementById('form_random').addEventListener('submit', function (e) {
+            document.getElementById('decrypt').addEventListener('submit', function (e) {
                 e.preventDefault();
+                
+                // Lấy và kiểm tra giá trị từ các input
                 const p = parseInt(document.getElementById('p').value);
                 const a = parseInt(document.getElementById('a').value);
                 const b = parseInt(document.getElementById('b').value);
@@ -631,27 +639,42 @@
                     parseInt(document.getElementById('y').value),
                 ];
                 const n = parseInt(document.getElementById('step2-n').innerText); // Lấy giá trị n
-                const C1x = parseInt(document.getElementById('C1x').innerText);
-                const C1y = parseInt(document.getElementById('C1y').innerText);
-                const C2x = parseInt(document.getElementById('C2x').innerText);
-                const C2y = parseInt(document.getElementById('C2y').innerText);
-                const C1 = [C1x, C1y];
-                const C2 = [C2x, C2y];
-                const s = parseInt(document.getElementById('s').innerText);
-        
+                
+                // Kiểm tra các giá trị C1, C2, s trước khi gửi
+                const C1x = parseInt(document.getElementById('step4-C1x').innerText);
+                const C1y = parseInt(document.getElementById('step4-C1y').innerText);
+                const C2x = parseInt(document.getElementById('step4-C2x').innerText);
+                const C2y = parseInt(document.getElementById('step4-C2y').innerText);
+                const s = parseInt(document.getElementById('s').value);
+            
+                // Kiểm tra giá trị hợp lệ
+                if (isNaN(p) || isNaN(a) || isNaN(b) || isNaN(n) || isNaN(C1x) || isNaN(C1y) || isNaN(C2x) || isNaN(C2y) || isNaN(s)) {
+                    console.error("Một trong các giá trị không hợp lệ!");
+                    return; // Dừng lại nếu có giá trị không hợp lệ
+                }
+            
+                // Nếu tất cả giá trị hợp lệ, gửi yêu cầu API
                 fetch('/decrypt-elip', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ a: a, b: b, p: p, G: G, n: n, C1: C1, C2: C2, s: s})
+                    body: JSON.stringify({ a: a, b: b, p: p, G: G, n: n, C1x: C1x, C1y: C1y, C2x: C2x, C2y: C2y, s: s})
                 })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('step5-M').innerText = data.decrypted_message;
+                    // Cập nhật giá trị sau khi giải mã
+                    document.getElementById("step5-C1x").innerText = C1x;
+                    document.getElementById("step5-C1y").innerText = C1y;
+                    document.getElementById("step5-C2x").innerText = C2x;
+                    document.getElementById("step5-C2y").innerText = C2y;
+                    document.getElementById("step5-s").innerText = s;
+                    document.getElementById("step5-M").innerText = data.decrypted_message;
+                    document.getElementById("step5-M2").innerText = data.decrypted_message;
                 })
                 .catch(error => console.error('Error:', error));
             });
+            
         </script>
         
     </body>

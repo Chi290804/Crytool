@@ -214,21 +214,20 @@
                                     </div>
 
                                     <div class="mb-3 row">
+                                      <label for="primeQ" class="col-sm-2 col-form-label"><i>e</i> =</label>
+                                      <div class="col-sm-10">
+                                          <!-- connect here: id="q1" -->
+                                          <input type="number" class="form-control" id="e1" placeholder="7" required />
+                                      </div>
+                                  </div>
+
+                                    <div class="mb-3 row">
                                         <label for="message" class="col-sm-2 col-form-label">Message:</label>
                                         <div class="col-sm-10">
                                             <!-- connect here: id="message1" -->
                                             <input type="text" class="form-control" id="message1" placeholder="Hello Alice" required />
                                         </div>
                                     </div>
-
-                                    <div class="mb-3 row">
-                                        <label for="signature" class="col-sm-2 col-form-label">Signature</label>
-                                        <div class="col-sm-10">
-                                            <!-- connect here: id="signature1" -->
-                                            <input type="text" class="form-control" id="signature1" placeholder="Bob" required />
-                                        </div>
-                                    </div>
-
 
                                     <div class="d-flex justify-content-begin">
                                         <!-- connect here: handle form submission -->
@@ -262,21 +261,20 @@
                                     </div>
 
                                     <div class="mb-3 row">
+                                      <label for="primeQ" class="col-sm-2 col-form-label"><i>e</i> =</label>
+                                      <div class="col-sm-10">
+                                          <!-- connect here: id="q1" -->
+                                          <input type="number" class="form-control" id="e2" placeholder="7" required />
+                                      </div>
+                                  </div>
+
+                                    <div class="mb-3 row">
                                         <label for="message2" class="col-sm-2 col-form-label">Message:</label>
                                         <div class="col-sm-10">
                                             <!-- connect here: id="message2" -->
                                             <input type="text" class="form-control" id="message2" placeholder="Hello Bob" required />
                                         </div>
                                     </div>
-
-                                    <div class="mb-3 row">
-                                        <label for="signature2" class="col-sm-2 col-form-label">Signature</label>
-                                        <div class="col-sm-10">
-                                            <!-- connect here: id="signature2" -->
-                                            <input type="text" class="form-control" id="signature2" placeholder="Alice" required />
-                                        </div>
-                                    </div>
-
 
                                     <div class="d-flex justify-content-begin">
                                         <!-- connect here: handle form submission -->
@@ -304,17 +302,19 @@
                                     <div class="card-body">
                                         <p class="card-text">Bob sends the message to Alice.</p>
                                         <!-- conect here: id="hash_signature1" -->
-                                        <p class="card-text">Sender: <span id="signature1">Bob</span></p>
+                                        <p class="card-text">Sender: Bob</span></p>
                                         <!-- connect here: id="message1" -->
                                         <p class="card-text">Message: <span id="message1">Hello Alice</span></p>
-                                        <!-- connect here: id="hashed_signature1" -->
-                                        <p class="card-text">Hashed signature: <span id="hashed_signature1">?</span></p>
                                         <!-- connect here: id="hashed_message1" -->
                                         <p class="card-text">Hashed message: <span id="hashed_message1">?</span></p>
                                         <!-- connect here: id="encrypted_signature1" -->
-                                        <p class="card-text">Encrypted signature: <span id="encrypted_signature1">?</span></p>
+                                        <p class="card-text">Signature: <span id="signature1">?</span></p>
                                         <!-- connect here: id="encrypted_message1" -->
                                         <p class="card-text">Encrypted message: <span id="encrypted_message1">?</span></p>
+
+                                        <p class="card-text">Bob public key: <span id="Bob_public_key">(n, e)</span></p>
+
+                                        <p class="card-text">Bob private key: <span id="Bob_private_key">(n, d)</span></p>
                                     </div>
                                 </div>
 
@@ -325,11 +325,12 @@
                                     <div class="card-body">
                                         <p class="card-text">Alice receives the message from Bob.</p>
                                         <!-- connect here: id="signature2" -->
-                                        <p class="card-text">Receiver: <span id="signature2">Alice</span></p>
-                                        <!-- connect here: id="decrypted_signature1" -->
-                                        <p class="card-text">Decrypt signature: <span id="decrypted_signature1">?</span></p>
+                                        <p class="card-text">Receiver: Alice</span></p>
                                         <!-- connect here: id="decrypted_message1" -->
                                         <p class="card-text">Decrypt message: <span id="decrypted_message1">?</span></p>
+                                        <!-- connect here: id="decrypted_signature1" -->
+                                        <p class="card-text">Verify signature: <span id="verify1">?</span></p>
+                                        <p class="card-text">V = <span id="signature12">121</span><sup><span id="e12">103</span></sup> mod <span id="n12">143</span> = <span id="v1">?</span></p>
                                     </div>
                                 </div>
 
@@ -351,36 +352,40 @@
                                         <h5 class="text-center">Sender</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text">Alice sends the message to Bob.</p>
-                                        <!-- conect here: id="hash_signature2" -->
-                                        <p class="card-text">Sender: <span id="signature2">Alice</span></p>
-                                        <!-- connect here: id="message2" -->
-                                        <p class="card-text">Message: <span id="message2">Hello Bob</span></p>
-                                        <!-- connect here: id="hashed_signature2" -->
-                                        <p class="card-text">Hashed signature: <span id="hashed_signature2">?</span></p>
-                                        <!-- connect here: id="hashed_message2" -->
-                                        <p class="card-text">Hashed message: <span id="hashed_message2">?</span></p>
-                                        <!-- connect here: id="encrypted_signature2" -->
-                                        <p class="card-text">Encrypted signature: <span id="encrypted_signature2">?</span></p>
-                                        <!-- connect here: id="encrypted_message2" -->
-                                        <p class="card-text">Encrypted message: <span id="encrypted_message2">?</span></p>
-                                    </div>
-                                </div>
+                                      <p class="card-text">Alice sends the message to Bob.</p>
+                                      <!-- conect here: id="hash_signature1" -->
+                                      <p class="card-text">Sender: Alice</span></p>
+                                      <!-- connect here: id="message1" -->
+                                      <p class="card-text">Message: <span id="message2">Hello Bob</span></p>
+                                      <!-- connect here: id="hashed_message2" -->
+                                      <p class="card-text">Hashed message: <span id="hashed_message2">?</span></p>
+                                      <!-- connect here: id="encrypted_signature2" -->
+                                      <p class="card-text">Signature: <span id="signature2">?</span></p>
+                                      <!-- connect here: id="encrypted_message2" -->
+                                      <p class="card-text">Encrypted message: <span id="encrypted_message2">?</span></p>
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="text-center">Receiver</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-text">Bob receives the message from Alice.</p>
-                                        <!-- connect here: id="signature1" -->
-                                        <p class="card-text">Receiver: <span id="signature1">Bob</span></p>
-                                        <!-- connect here: id="decrypted_signature2" -->
-                                        <p class="card-text">Decrypt signature: <span id="decrypted_signature2">?</span></p>
-                                        <!-- connect here: id="decrypted_message2" -->
-                                        <p class="card-text">Decrypt message: <span id="decrypted_message2">?</span></p>
-                                    </div>
-                                </div>
+                                      <p class="card-text">Alice public key: <span id="Alice_public_key">(n, e)</span></p>
+
+                                      <p class="card-text">Alice private key: <span id="Alice_private_key">(n, d)</span></p>
+                                  </div>
+                              </div>
+
+                              <div class="card">
+                                  <div class="card-header">
+                                      <h5 class="text-center">Receiver</h5>
+                                  </div>
+                                  <div class="card-body">
+                                      <p class="card-text">Bob receives the message from Bob.</p>
+                                      <!-- connect here: id="signature2" -->
+                                      <p class="card-text">Receiver: Bob</p>
+                                      <!-- connect here: id="decrypted_message1" -->
+                                      <p class="card-text">Decrypt message: <span id="decrypted_message2">?</span></p>
+                                      <!-- connect here: id="decrypted_signature1" -->
+                                      <p class="card-text">Verify signature: <span id="verify2">?</span></p>
+                                      <p class="card-text">V = <span id="signature22">121</span><sup><span id="e22">103</span></sup> mod <span id="n22">143</span> = <span id="v2">?</span></p>
+                                  </div>
+                              </div>
+
                             </div>
                         </div>
                     </div>
@@ -396,5 +401,179 @@
             </div>
         </footer>
     </body>
-
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Hàm kiểm tra số nguyên tố
+        function isPrime(num) {
+          if (num <= 1) return false;
+          for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+          }
+          return true;
+        }
+      
+        // Hàm tính UCLN
+        function gcd(a, b) {
+          while (b !== 0) {
+            const temp = b;
+            b = a % b;
+            a = temp;
+          }
+          return a;
+        }
+      
+        // Lấy form system1_setting
+        const signForm = document.getElementById("system1_setting");
+        const signForm2 = document.getElementById("system2_setting");
+      
+        // Gắn sự kiện submit
+        signForm.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Ngăn chặn hành động mặc định của form
+      
+          // Thu thập dữ liệu từ các input
+          const p = parseInt(document.getElementById("p1").value, 10);
+          const q = parseInt(document.getElementById("q1").value, 10);
+          const eValue = parseInt(document.getElementById("e1").value, 10);
+          const message = document.getElementById("message1").value;
+      
+          // Kiểm tra p và q có phải số nguyên tố không
+          if (!isPrime(p)) {
+            alert("Số P phải là số nguyên tố!");
+            return;
+          }
+      
+          if (!isPrime(q)) {
+            alert("Số Q phải là số nguyên tố!");
+            return;
+          }
+      
+          // Tính n và phi(n)
+          const n = p * q;
+          const phiN = (p - 1) * (q - 1);
+      
+          // Kiểm tra e nguyên tố cùng nhau với phi(n)
+          if (gcd(eValue, phiN) !== 1) {
+            alert("Số E phải là số nguyên tố cùng nhau với φ(n)!");
+            return;
+          }
+      
+          // Chuẩn bị dữ liệu cho API
+          const requestData = {
+            p: p,
+            q: q,
+            e: eValue,
+            message: message,
+          };
+      
+          try {
+            // Gửi yêu cầu POST đến API
+            const response = await fetch("/sign-rsa", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(requestData),
+            });
+      
+            // Xử lý phản hồi từ API
+            const data = await response.json();
+      
+            // Kiểm tra phản hồi
+            if (response.ok) {
+              // Hiển thị kết quả lên giao diện
+              document.getElementById("encrypted_message1").textContent =
+                data.encrypted_message;
+              document.getElementById("signature1").textContent = data.signature;
+              document.getElementById("signature12").textContent = data.signature;
+              document.getElementById("hashed_message1").textContent =
+              data.V;
+              document.getElementById("Bob_public_key").textContent = `(${data.public_key[0]}, ${data.public_key[1]})`;
+              document.getElementById("Bob_private_key").textContent = `(${data.private_key[0]}, ${data.private_key[1]})`
+              document.getElementById("decrypted_message1").textContent =
+                data.decrypt_message;
+              document.getElementById("v1").textContent = data.V;
+              document.getElementById("e12").textContent = eValue;
+              document.getElementById("n12").textContent = n;
+              document.getElementById("verify1").textContent = "Valid";
+            } else {
+              console.error("Error:", data.error || "Unknown error");
+            }
+          } catch (error) {
+            console.error("Error sending request:", error);
+          }
+        });
+        signForm2.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Ngăn chặn hành động mặc định của form
+      
+          // Thu thập dữ liệu từ các input
+          const p = parseInt(document.getElementById("p2").value, 10);
+          const q = parseInt(document.getElementById("q2").value, 10);
+          const eValue = parseInt(document.getElementById("e2").value, 10);
+          const message = document.getElementById("message2").value;
+      
+          // Kiểm tra p và q có phải số nguyên tố không
+          if (!isPrime(p)) {
+            alert("Số P phải là số nguyên tố!");
+            return;
+          }
+      
+          if (!isPrime(q)) {
+            alert("Số Q phải là số nguyên tố!");
+            return;
+          }
+      
+          // Tính n và phi(n)
+          const n = p * q;
+          const phiN = (p - 1) * (q - 1);
+      
+          // Kiểm tra e nguyên tố cùng nhau với phi(n)
+          if (gcd(eValue, phiN) !== 1) {
+            alert("Số E phải là số nguyên tố cùng nhau với φ(n)!");
+            return;
+          }
+      
+          // Chuẩn bị dữ liệu cho API
+          const requestData = {
+            p: p,
+            q: q,
+            e: eValue,
+            message: message,
+          };
+      
+          try {
+            // Gửi yêu cầu POST đến API
+            const response = await fetch("/sign-rsa", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(requestData),
+            });
+      
+            // Xử lý phản hồi từ API
+            const data = await response.json();
+      
+            // Kiểm tra phản hồi
+            if (response.ok) {
+              // Hiển thị kết quả lên giao diện
+              document.getElementById("encrypted_message2").textContent =
+                data.encrypted_message;
+              document.getElementById("signature2").textContent = data.signature;
+              document.getElementById("signature22").textContent = data.signature;
+              document.getElementById("hashed_message2").textContent =
+              data.V;
+              document.getElementById("Alice_public_key").textContent = `(${data.public_key[0]}, ${data.public_key[1]})`;
+              document.getElementById("Alice_private_key").textContent = `(${data.private_key[0]}, ${data.private_key[1]})`
+              document.getElementById("decrypted_message2").textContent =
+                data.decrypt_message;
+              document.getElementById("v2").textContent = data.V;
+              document.getElementById("e22").textContent = eValue;
+              document.getElementById("n22").textContent = n;
+              document.getElementById("verify2").textContent = "Valid";
+            } else {
+              console.error("Error:", data.error || "Unknown error");
+            }
+          } catch (error) {
+            console.error("Error sending request:", error);
+          }
+        });
+      });
+      
+    </script>
 </html>

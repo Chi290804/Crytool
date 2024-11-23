@@ -241,8 +241,8 @@
                 <hr>
 
                 <!-- connect here: id="c", id="m", id="e", id="n" -->
-                <p><i>c</i> = <span id="m">88</span><sup><span id="e">7</span></sup> mod <span id="n">143</span></p>
-                <p><i>c</i> = <span id="c">121</span></p>
+                <p><i>c</i> = <span id="m1">88</span><sup><span id="e1">7</span></sup> mod <span id="n1">143</span></p>
+                <p><i>c</i> = <span id="c1">121</span></p>
 
                 <p>Letters are converted to numbers using an encoding system like <span class="highlight">ASCII</span>.</p>
                 <p>For the entered values this would be: <i>m</i> = <i>x</i> and <i>c</i> = <i>y</i> </p>  </div>
@@ -272,7 +272,7 @@
                 <h6 class="fw-bold">&rArr; Decryption</h6>
 
                 <!-- connect here: id="decrypted", id="c", id="d", id="n" -->
-                <p><i>m</i> = <span id="c">121</span><sup><span id="d">103</span></sup> mod <span id="n">143</span></p>
+                <p><i>m</i> = <span id="c2">121</span><sup><span id="d2">103</span></sup> mod <span id="n2">143</span></p>
 
                 <p><i>m</i> = <span id="decrypted">88</span></p>
 
@@ -351,13 +351,18 @@
         });
 
         const data = await response.json();
+        document.getElementById("c1").textContent = data.encrypted_message;
         document.getElementById("c").textContent = data.encrypted_message;
+        document.getElementById("m1").textContent = m;
+        document.getElementById("e1").textContent = eValue;
+        document.getElementById("p1").textContent = p;
       });
 
       // Step 6: Decrypt
-      const decryptButton = document.getElementById("decrypt_button");
-      decryptButton.addEventListener("click", async () => {
-        const c = document.getElementById("c").textContent;
+      const decryptForm = document.getElementById("form_encrypt");
+      encryptForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const c = document.getElementById("c1").textContent;
         const d = document.getElementById("d").textContent;
         const n = document.getElementById("n").textContent;
 
