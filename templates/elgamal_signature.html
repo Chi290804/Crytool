@@ -228,7 +228,8 @@
                                     <!-- conect here: id="signature1" -->
                                     <p class="card-text">Sender: Bob</p>
                                     <!-- connect here: id="message1" -->
-                                    <p class="card-text">Message: <span id="message1">Hello Alice</span></p>
+                                    <p class="card-text">Message: <span id="message12">Hello Alice</span></p>
+                                    <p class="card-text">k: <span id="k"></span></p>
                                     <!-- connect here: id="hashed_signature1" 
                                     <p class="card-text">Hashed signature: <span id="hashed_signature1">?</span></p>-->
                                     <!-- connect here: id="hashed_message1" 
@@ -279,7 +280,8 @@
                                     <!-- conect here: id="signature2" -->
                                     <p class="card-text">Sender: Alice</p>
                                     <!-- connect here: id="message2" -->
-                                    <p class="card-text">Message: <span id="message2">Hello Bob</span></p>
+                                    <p class="card-text">Message: <span id="message22">Hello Bob</span></p>
+                                    <p class="card-text">k: <span id="k2"></span></p>
                                     <!-- connect here: id="hashed_signature1" 
                                     <p class="card-text">Hashed signature: <span id="hashed_signature1">?</span></p>-->
                                     <!-- connect here: id="hashed_message1" 
@@ -319,213 +321,65 @@
             </div>
         </footer>
         <script>
-            document.getElementById("system1_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const p = parseInt(document.getElementById("p1").value);
-                if (isNaN(p)) {
-                alert("Please enter valid numerical values.");
-                return;
-                }
-                fetch('/caculate_alpha_elgamalSign',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({p: p})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('alpha1').innerText = data.alpha;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-            });
-
-            document.getElementById("system2_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const p = parseInt(document.getElementById("p2").value);
-                if (isNaN(p)) {
-                  alert("Please enter valid numerical values.");
-                  return;
-                }
-                fetch('/caculate_alpha_elgamalSign',{
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({p: p})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('alpha2').innerText = data.alpha;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-              });
-
-              document.getElementById("system1_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const message = document.getElementById("message1").value;
-                fetch('/hashed_message_elgamalSign',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({message: message})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('encrypted_message1').innerText = data.hashed_message;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-            });
-
-            document.getElementById("system2_setting").addEventListener("submit", function(event) {
-                const message = document.getElementById("message2").value;
-
-                fetch('/hashed_message_elgamalSign',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({message: message})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('encrypted_message2').innerText = data.hashed_message;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-            });
-
-              document.getElementById("system1_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const p = parseInt(document.getElementById("p1").value);
-                const alpha = parseInt(document.getElementById("alpha1").innerText);
-                const a = parseInt(document.getElementById("privateKey1").value);
-                const message = document.getElementById("message1").value;
-                if (isNaN(p) || isNaN(a)) {
-                alert("Please enter valid numerical values.");
-                return;
-                }
-                fetch('/encrypt_elgamalSign',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({p: p, alpha: alpha, message: message, a: a})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('Signature1').innerText = `(${data.encrypted_signature[0]}, ${data.encrypted_signature[1]})`;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-            });
-
-            document.getElementById("system2_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const p = parseInt(document.getElementById("p2").value);
-                const alpha = parseInt(document.getElementById("alpha2").innerText);
-                const a = parseInt(document.getElementById("privateKey2").value);
-                const message = document.getElementById("message2").value;
-                if (isNaN(p) || isNaN(a)) {
-                alert("Please enter valid numerical values.");
-                return;
-                }
-                fetch('/encrypt_elgamalSign',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({p: p, alpha: alpha, message: message, a: a})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('Signature2').innerText = `(${data.encrypted_signature[0]}, ${data.encrypted_signature[1]})`;
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
-            });
-
-
-            document.getElementById("system1_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
+            document.getElementById('system1_setting').addEventListener('submit', async function(e) {
+                e.preventDefault();
                 
-                const p = parseInt(document.getElementById("p1").value);
-                const alpha = parseInt(document.getElementById("alpha1").innerText);
-                const a = parseInt(document.getElementById("privateKey1").value);
-                const message = document.getElementById("message1").value;
+                const p = document.getElementById('p1').value;
+                const a = document.getElementById('privateKey1').value;
+                const message = document.getElementById('message1').value;
                 
-
-                // Gửi dữ liệu đến API
-                fetch('/decrypt_elgamalSign', {
+                const response = await fetch('/sign_elgammal', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        p: p,
-                        alpha: alpha,
-                        message: message,
-                        a: a,
-
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Xử lý kết quả nhận được từ server
-                    document.getElementById('v1-1').innerText = data.v1;
-                    document.getElementById('v2-1').innerText = data.v2;
-                    if (decrypted_signature_valid) {
-                        document.getElementById('verify1').innerText = "valid";
-                    } else {
-                        document.getElementById('verify1').innerText = "invalid";
-                    }                
-                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ p, a, message })
+                });
+                
+                const result = await response.json();
+                
+                // Hiển thị kết quả trên giao diện
+                document.getElementById('alpha1').innerHTML = result.alpha;
+                document.getElementById('message12').innerText = message;
+                document.getElementById('encrypted_message1').innerText = `(${result.encrypted_message[0]}, ${result.encrypted_message[1]})`;
+                document.getElementById('Signature1').innerText = `(${result.signature[0]}, ${result.signature[1]})`;
+                document.getElementById('decrypted_message1').innerText = message;
+                document.getElementById('verify1').innerText = result.valid ? 'Valid' : 'Invalid';
+                document.getElementById('v1-1').innerText = result.v1;
+                document.getElementById('v2-1').innerText = result.v2;
+                document.getElementById('k').innerText = result.k;
             });
             
-
-            document.getElementById("system2_setting").addEventListener("submit", function(event) {
-                event.preventDefault();
+            document.getElementById('system2_setting').addEventListener('submit', async function(e) {
+                e.preventDefault();
                 
-                const p = parseInt(document.getElementById("p2").value);
-                const alpha = parseInt(document.getElementById("alpha2").innerText);
-                const a = parseInt(document.getElementById("privateKey2").value);
-                const message = document.getElementById("message2").value;
+                // Lấy dữ liệu từ các trường nhập liệu
+                const p = document.getElementById('p2').value;
+                const a = document.getElementById('privateKey2').value;
+                const message = document.getElementById('message2').value;
                 
-                // Lấy và chuyển đổi Signature2 từ dạng chuỗi "(gamma, delta)" sang mảng số nguyên
-                const signatureText = document.getElementById("Signature2").innerText;
-                const signatureArray = signatureText.replace(/[()]/g, '').split(',').map(Number);
-            
-                // Kiểm tra giá trị đầu vào
-                if (isNaN(p) || isNaN(a) || signatureArray.some(isNaN)) {
-                    alert("Please enter valid numerical values.");
-                    return;
-                }
-            
-                // Gửi dữ liệu đến API
-                fetch('/decrypt_elgamalSign', {
+                // Gửi yêu cầu POST đến API '/sign_elgammal'
+                const response = await fetch('/sign_elgammal', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        p: p,
-                        alpha: alpha,
-                        message: message,
-                        a: a,
-                        encrypted_signature: signatureArray  // Thêm chữ ký vào request
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Xử lý kết quả nhận được từ server
-                    document.getElementById('v1-2').innerText = data.v1;
-                    document.getElementById('v2-2').innerText = data.v2;
-                    document.getElementById('verify-2').innerText = toString(data.decrypted_signature_valid);                })
-                .catch(error => console.error('Error:', error)); // Thêm xử lý lỗi
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ p, a, message })
+                });
+                
+                // Nhận kết quả từ phản hồi của API
+                const result = await response.json();
+                
+                // Hiển thị kết quả trên giao diện
+                document.getElementById('alpha2').innerText = result.alpha;
+                document.getElementById('message22').innerText = message;
+                document.getElementById('encrypted_message2').innerText = `(${result.encrypted_message[0]}, ${result.encrypted_message[1]})`;
+                document.getElementById('Signature2').innerText = `(${result.signature[0]}, ${result.signature[1]})`;
+                document.getElementById('decrypted_message2').innerText = message;
+                document.getElementById('verify2').innerText = result.valid ? 'Valid' : 'Invalid';
+                document.getElementById('v1-2').innerText = result.v1;
+                document.getElementById('v2-2').innerText = result.v2;
+                document.getElementById('k2').innerText = result.k;
             });
             
-
-          </script>
-          
+            
+        </script>
     </body>
 
 </html>

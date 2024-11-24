@@ -234,78 +234,131 @@ def decrypt_elgammal():
 ##
 #Elgammal signature
 ##
-# Endpoint 1: Tính alpha nguyên thủy của p
-@app.route('/caculate_alpha_elgamalSign', methods=['POST'])
-def calculate_alpha():
+# # Endpoint 1: Tính alpha nguyên thủy của p
+# @app.route('/caculate_alpha_elgamalSign', methods=['POST'])
+# def calculate_alpha():
+#     data = request.get_json()
+#     p = int(data['p'])
+#     alpha = elgammal_backend.primitive_root(p)
+#     return jsonify({'p': p, 'alpha': alpha})
+
+# # Endpoint 2: Hash message và tạo signature SHA-512
+# @app.route('/hashed_message_elgamalSign', methods=['POST'])
+# def hash_message_endpoint():
+#     data = request.get_json()
+#     message = data['message']
+    
+#     hashed_message = elgammal_backend.hashing(message)
+#     sha512_signature = int(hashlib.sha512(message.encode()).hexdigest(), 16)
+    
+#     return jsonify({
+#         'hashed_message': hashed_message,
+#         'sha512_signature': sha512_signature
+#     })
+
+# # Endpoint 3: Mã hóa thông điệp và chữ ký
+# @app.route('/encrypt_elgamalSign', methods=['POST'])
+# def encrypt_elgamal():
+#     data = request.get_json()
+#     p = int(data['p'])
+#     alpha = int(data['alpha'])
+#     a = int(data['a'])
+#     beta = pow(alpha, a, p)
+#     message = data['message']
+    
+#     # Mã hóa chữ ký
+#     hash_value = int(hashlib.sha512(message.encode()).hexdigest(), 16)
+#     k = 3  # Chọn ngẫu nhiên một số nhỏ cho đơn giản
+#     gamma = pow(alpha, k, p)
+#     delta = (hash_value - a * gamma) * pow(k, -1, p - 1) % (p - 1)
+    
+#     encrypted_signature = (gamma, delta)
+    
+#     return jsonify({
+#         'p': p,
+#         'alpha': alpha,
+#         'beta': beta,
+#         'encrypted_signature': encrypted_signature
+#     })
+
+# # Endpoint 4: Giải mã thông điệp và chữ ký
+# @app.route('/decrypt_elgamalSign', methods=['POST'])
+# def decrypt_elgamal():
+#     data = request.get_json()
+#     p = int(data['p'])
+#     alpha = int(data['alpha'])
+#     a = int(data['a'])
+#     beta = pow(alpha, a, p)
+#     message = data['message']
+    
+#     # Kiểm tra chữ ký
+#     hash_value = int(hashlib.sha512(message.encode()).hexdigest(), 16)
+#     k = 3
+#     gamma = pow(alpha, k, p)
+#     delta = (hash_value - a * gamma) * pow(k, -1, p - 1) % (p - 1)
+#     v1 = (pow(beta, gamma, p) * pow(gamma, delta, p)) % p
+#     v2 = pow(alpha, hash_value, p)
+    
+#     valid = (pow(beta, gamma, p) * pow(gamma, delta, p)) % p == pow(alpha, hash_value, p)
+    
+#     return jsonify({
+#         'v1': v1,
+#         'v2': v2,
+#         'decrypted_signature_valid': valid
+#     })
+    
+@app.route('/sign_elgammal', methods=['POST'])
+def sign_elgammal():
     data = request.get_json()
     p = int(data['p'])
-    alpha = elgammal_backend.primitive_root(p)
-    return jsonify({'p': p, 'alpha': alpha})
-
-# Endpoint 2: Hash message và tạo signature SHA-512
-@app.route('/hashed_message_elgamalSign', methods=['POST'])
-def hash_message_endpoint():
-    data = request.get_json()
+    alpha = 2  # Giá trị nguyên thủy mặc định
+    a = int(data['a'])  # Khóa bí mật (private key)
     message = data['message']
     
-    hashed_message = elgammal_backend.hashing(message)
-    sha512_signature = int(hashlib.sha512(message.encode()).hexdigest(), 16)
+    # Tạo khóa công khai
+    beta = rsa_backend.mod_exp(alpha, a, p)
+    
+    # Băm thông điệp
+    hash_value = int(hashlib.sha256(message.encode()).hexdigest(), 16) % p
+    
+    # Chọn k ngẫu nhiên sao cho gcd(k, p-1) = 1
+    k = random.randint(2, p-2)
+    while rsa_backend.gcd(k, p-1) != 1:
+        k = random.randint(2, p-2)
+    
+    # Tính gamma và delta cho chữ ký
+    gamma = rsa_backend.mod_exp(alpha, k, p)
+    k_inv = pow(k, -1, p-1)
+    delta = (k_inv * (hash_value - a * gamma)) % (p - 1)
+    signature = [gamma, delta]
+    
+    # Mã hóa thông điệp
+    y1 = rsa_backend.mod_exp(alpha, k, p)
+    y2 = (hash_value * rsa_backend.mod_exp(beta, k, p)) % p
+    encrypted_message = [y1, y2]
+    
+    # Giải mã thông điệp
+    decrypted_hash = (y2 * rsa_backend.mod_exp(y1, p-1-a, p)) % p
+    
+    # Xác minh chữ ký
+    v1 = (rsa_backend.mod_exp(beta, gamma, p) * rsa_backend.mod_exp(gamma, delta, p)) % p
+    v2 = rsa_backend.mod_exp(alpha, hash_value, p)
+    valid = v1 == v2
     
     return jsonify({
-        'hashed_message': hashed_message,
-        'sha512_signature': sha512_signature
-    })
-
-# Endpoint 3: Mã hóa thông điệp và chữ ký
-@app.route('/encrypt_elgamalSign', methods=['POST'])
-def encrypt_elgamal():
-    data = request.get_json()
-    p = int(data['p'])
-    alpha = int(data['alpha'])
-    a = int(data['a'])
-    beta = pow(alpha, a, p)
-    message = data['message']
-    
-    # Mã hóa chữ ký
-    hash_value = int(hashlib.sha512(message.encode()).hexdigest(), 16)
-    k = 3  # Chọn ngẫu nhiên một số nhỏ cho đơn giản
-    gamma = pow(alpha, k, p)
-    delta = (hash_value - a * gamma) * pow(k, -1, p - 1) % (p - 1)
-    
-    encrypted_signature = (gamma, delta)
-    
-    return jsonify({
-        'p': p,
         'alpha': alpha,
-        'beta': beta,
-        'encrypted_signature': encrypted_signature
-    })
-
-# Endpoint 4: Giải mã thông điệp và chữ ký
-@app.route('/decrypt_elgamalSign', methods=['POST'])
-def decrypt_elgamal():
-    data = request.get_json()
-    p = int(data['p'])
-    alpha = int(data['alpha'])
-    a = int(data['a'])
-    beta = pow(alpha, a, p)
-    message = data['message']
-    
-    # Kiểm tra chữ ký
-    hash_value = int(hashlib.sha512(message.encode()).hexdigest(), 16)
-    k = 3
-    gamma = pow(alpha, k, p)
-    delta = (hash_value - a * gamma) * pow(k, -1, p - 1) % (p - 1)
-    v1 = (pow(beta, gamma, p) * pow(gamma, delta, p)) % p
-    v2 = pow(alpha, hash_value, p)
-    
-    valid = (pow(beta, gamma, p) * pow(gamma, delta, p)) % p == pow(alpha, hash_value, p)
-    
-    return jsonify({
+        'private_key': a,
+        'public_key': beta,
+        'signature': signature,
+        'encrypted_message': encrypted_message,
+        'decrypted_hash': decrypted_hash,
+        'valid': valid,
         'v1': v1,
         'v2': v2,
-        'decrypted_signature_valid': valid
+        'k': k,
     })
+
+    
 #ELLIPTIC_CURVE
 @app.route('/check_condition', methods=['POST'])
 def check_condition_api():

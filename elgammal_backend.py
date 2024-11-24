@@ -1,7 +1,21 @@
 # %%
+from hashlib import sha256
+import random
 from sympy.ntheory.residue_ntheory import primitive_root
 from sympy.ntheory import is_primitive_root
 import numpy as np
+
+def mod_exp(base, exp, mod):
+    result = 1
+    base = base % mod
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        exp = exp >> 1
+        base = (base * base) % mod
+    return result
+
+
 def hashing(txt):
     
     # txt = txt.upper()
@@ -173,7 +187,47 @@ class ElGammal_signature_system():
     def case_2(self):
         self.send_and_receive(self.participant2, self.participant1)
         
-  
+def generate_keys(p, g):
+    # Khóa bí mật (private key) x: 1 < x < p-1
+    x = random.randint(1, p-2)
+    # Khóa công khai (public key) y = g^x mod p
+    y = mod_exp(g, x, p)
+    return (p, g, y), x
+
+# Tạo chữ ký
+def sign_message(message, p, g, x):
+    k = random.randint(1, p-2)
+    while gcd(k, p-1) != 1:  # Đảm bảo k và p-1 nguyên tố cùng nhau
+        k = random.randint(1, p-2)
+    
+    r = mod_exp(g, k, p)
+    k_inv = pow(k, -1, p-1)  # Tính nghịch đảo modular của k mod (p-1)
+    hash_val = int(sha256(message.encode()).hexdigest(), 16)
+    
+    s = (k_inv * (hash_val - x * r)) % (p-1)
+    return (r, s)
+
+# Hàm tính GCD (Ước số chung lớn nhất)
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+# Xác minh chữ ký
+def verify_signature(message, signature, public_key):
+    r, s = signature
+    p, g, y = public_key
+    
+    if not (1 < r < p):
+        return False
+    
+    hash_val = int(sha256(message.encode()).hexdigest(), 16)
+    
+    # Kiểm tra chữ ký
+    v1 = (mod_exp(y, r, p) * mod_exp(r, s, p)) % p
+    v2 = mod_exp(g, hash_val, p)
+    
+    return v1 == v2  
 
 
 # p1 = 52786995629017990078783375961280944761228208113475649926725407513191655174698844733077428475647679927182368705701299295149783307413169773988962304654470083227836242729953033004142207979567298543758572036428438833505230009334283511526180873145779
