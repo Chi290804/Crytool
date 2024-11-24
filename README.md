@@ -10,7 +10,7 @@ Chạy lệnh sau:
 python app.py
 ```
 Sau đó truy cập đường link: http://127.0.0.1:5000
-## Các tác vụ
+## Các chức năng
 - Tìm UCLN bằng thuật toán Euclid và Euclide mở rộng
 - Tìm số nguyên tố và kiểm tra số nguyên tố
 - Mã hóa và giải mã bằng RSA
