@@ -127,7 +127,7 @@
                                     <div class="col-sm-10">
                                         <!-- connect here: id="alpha1" -->
                                         <!--<input type="number" class="form-control" id="alpha1" placeholder="2" required />-->
-                                        <span id="alpha1">11</span>
+                                        <span id="alpha1"></span>
                                     </div>
                                 </div>
 
@@ -321,13 +321,39 @@
             </div>
         </footer>
         <script>
+
+            function isPrime(num) {
+                if (num <= 1) return false;
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                  if (num % i === 0) return false;
+                }
+                return true;
+              }
+            
+              // Hàm tính UCLN
+              function gcd(a, b) {
+                while (b !== 0) {
+                  const temp = b;
+                  b = a % b;
+                  a = temp;
+                }
+                return a;
+              }
             document.getElementById('system1_setting').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const p = document.getElementById('p1').value;
                 const a = document.getElementById('privateKey1').value;
                 const message = document.getElementById('message1').value;
-                
+                if (!isPrime(p)) {
+                    alert("Số p phải là số nguyên tố!");
+                    return;
+                }
+
+                if (a<=1 || a>=p-1) {
+                    alert("Private key a cần thỏa mãn: 1 < a < p-1");
+                    return;
+                }
                 const response = await fetch('/sign_elgammal', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -355,7 +381,15 @@
                 const p = document.getElementById('p2').value;
                 const a = document.getElementById('privateKey2').value;
                 const message = document.getElementById('message2').value;
-                
+                if (!isPrime(p)) {
+                    alert("Số p phải là số nguyên tố!");
+                    return;
+                }
+
+                if (a<=1 || a>=p-1) {
+                    alert("Private key a cần thỏa mãn: 1 < a < p-1");
+                    return;
+                }
                 // Gửi yêu cầu POST đến API '/sign_elgammal'
                 const response = await fetch('/sign_elgammal', {
                     method: 'POST',

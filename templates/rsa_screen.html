@@ -301,11 +301,21 @@
     document.addEventListener("DOMContentLoaded", () => {
       // Step 1: Calculate n and φ(n)
       const primesForm = document.getElementById("primes_setting");
+      const isPrime = (num) => {
+        if (num <= 1) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+          if (num % i === 0) return false;
+        }
+        return true;
+      };
       primesForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const p = document.getElementById("p").value;
         const q = document.getElementById("q").value;
-
+        if (!isPrime(p) || !isPrime(q)) {
+          alert("Số p, q phải là số nguyên tố!");
+          return;
+        }
         const response = await fetch("/caculate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -321,27 +331,40 @@
       const eForm = document.getElementById("choose_e");
       eForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const eValue = document.getElementById("e").value;
+        const eValue = parseInt(document.getElementById("e").value);
         const n = document.getElementById("n").textContent;
-        const phi_n = document.getElementById("phi").textContent;
+        const phi_n = parseInt(document.getElementById("phi").textContent);
 
-        const response = await fetch("/generate_keys", {
+        // Gửi yêu cầu kiểm tra gcd(e, phi_n)
+        const response = await fetch("/check_coprime", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ e: eValue, n, phi_n }),
+          body: JSON.stringify({ e: eValue, phi_n }),
         });
 
         const data = await response.json();
 
-        // Cập nhật giá trị của khóa công khai và khóa riêng tư
-        document.getElementById("e").textContent = data.public_key[1];
-        document.getElementById("d").textContent = data.private_key[1];
+        if (data.isCoprime) {
+          // Nếu e và phi_n là số nguyên tố cùng nhau
+          const generateResponse = await fetch("/generate_keys", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ e: eValue, n, phi_n }),
+          });
 
-        // Hiển thị public key và private key
-        document.querySelector("#public-key").textContent = `(${data.public_key[0]}, ${data.public_key[1]})`;
-        document.querySelector("#private-key").textContent = `(${data.private_key[0]}, ${data.private_key[1]})`;
+          const keyData = await generateResponse.json();
+          // Cập nhật giá trị của khóa công khai và khóa riêng tư
+          document.getElementById("e").textContent = keyData.public_key[1];
+          document.getElementById("d").textContent = keyData.private_key[1];
+
+          // Hiển thị public key và private key
+          document.querySelector("#public-key").textContent = `(${keyData.public_key[0]}, ${keyData.public_key[1]})`;
+          document.querySelector("#private-key").textContent = `(${keyData.private_key[0]}, ${keyData.private_key[1]})`;
+        } else {
+          // Nếu e và phi_n không phải là số nguyên tố cùng nhau
+          alert("e không phải là số nguyên tố cùng nhau với phi_n!");
+        }
       });
-
 
       // Step 5: Encrypt
       const encryptForm = document.getElementById("form_encrypt");
@@ -391,7 +414,7 @@
           if (data.error) {
             document.getElementById("decrypted").textContent = "Lỗi: " + data.error;
           } else {
-            document.getElementById("decrypted").textContent = data.decrypted_message;
+            document.getElementById("decrypted").textContent = m;
             document.getElementById("c2").textContent = c;
             document.getElementById("d2").textContent = d;
             document.getElementById("n2").textContent = n;

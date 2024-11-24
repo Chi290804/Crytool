@@ -41,6 +41,16 @@ def primality():
     return render_template('primality.html')
 
 
+@app.route('/check_coprime', methods=['POST'])
+def check_coprime():
+    data = request.json
+    e = data.get('e')
+    phi_n = data.get('phi_n')
+    isCoprime = rsa_backend.gcd(e, phi_n) == 1
+    return jsonify({
+        "isCoprime": isCoprime
+    })    
+
 @app.route('/caculate', methods=['POST'])
 def caculate():
     # Get the public key from the request
@@ -448,6 +458,17 @@ def message_to_point_api():
     return jsonify({"status": "success", "x": x, "y": y})
 
 # Mã hóa thông điệp
+
+@app.route('/get_points', methods=['GET'])
+def get_points():
+    # Lấy tham số a, b, p từ query parameters
+    a = int(request.args.get('a'))  # Giá trị mặc định của a là 2 nếu không có tham số
+    b = int(request.args.get('b'))  # Giá trị mặc định của b là 3 nếu không có tham số
+    p = int(request.args.get('p'))  # Giá trị mặc định của p là 17 nếu không có tham số
+
+    points = elliptic_backend.get_points_on_curve(a, b, p)  # Lấy các điểm từ đường cong elliptic
+    return jsonify(points)  # Trả về dưới dạng JSON
+
 @app.route('/encrypt-elip', methods=['POST'])
 def encrypt_api():
     data = request.get_json()

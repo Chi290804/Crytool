@@ -296,11 +296,31 @@
             </div>
         </footer>
         <script>
+            function isPrime(num) {
+                if (num <= 1) return false;
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                  if (num % i === 0) return false;
+                }
+                return true;
+              }
+            
+              // Hàm tính UCLN
+              function gcd(a, b) {
+                while (b !== 0) {
+                  const temp = b;
+                  b = a % b;
+                  a = temp;
+                }
+                return a;
+              }
             document.getElementById("form_prime_setting").addEventListener("submit", (e) => {
                 e.preventDefault();
             
                 const p = parseInt(document.getElementById("p").value);
-            
+                if (!isPrime(p)) {
+                    alert("Số p phải là số nguyên tố!");
+                    return;
+                }
                 fetch('/calculate_alpha', {
                     method: 'POST',
                     headers: {
@@ -321,7 +341,10 @@
                 const p = parseInt(document.getElementById("step2-p").innerText);
                 const alpha = parseInt(document.getElementById("step2-alpha").innerText);
                 const a = parseInt(document.getElementById("a").value);
-            
+                if (a<=1 || a>=p-1) {
+                    alert("Số a không hợp lệ!");
+                    return;
+                }
                 fetch('/calculate_beta', {
                     method: 'POST',
                     headers: {
@@ -373,6 +396,11 @@
                 const message = document.getElementById("hashed_message").innerText;
                 const a = parseInt(document.getElementById("a").value);
 
+                if (k<=1 || k>=p-1) {
+                    alert("Số k không hợp lệ!");
+                    return;
+                }
+                
                 fetch('/encrypt_elgammal', {
                     method: 'POST',
                     headers: {

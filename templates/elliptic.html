@@ -371,7 +371,7 @@
                         </p>
                         <p>
                             <!-- connect here: id="M" -->
-                            <i>M = (<span id="step5-M">?</span>)</i>
+                            <i>M = <span id="step5-M">?</span></i>
                         </p>
                         <form id="decrypt">
 
@@ -417,11 +417,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.valid) {
-                        alert("The values of p, a, b are valid.");
-                    } else {
+                    if (!data.valid) {
                         alert("The values of p, a, b are invalid.");
-                    }
+                        
+                    } 
                 })
                 .catch(error => console.error('Error:', error));
             });            
@@ -646,7 +645,7 @@
                 const C2x = parseInt(document.getElementById('step4-C2x').innerText);
                 const C2y = parseInt(document.getElementById('step4-C2y').innerText);
                 const s = parseInt(document.getElementById('s').value);
-            
+                const hm = document.getElementById('hashed_message').innerText;
                 // Kiểm tra giá trị hợp lệ
                 if (isNaN(p) || isNaN(a) || isNaN(b) || isNaN(n) || isNaN(C1x) || isNaN(C1y) || isNaN(C2x) || isNaN(C2y) || isNaN(s)) {
                     console.error("Một trong các giá trị không hợp lệ!");
@@ -669,8 +668,8 @@
                     document.getElementById("step5-C2x").innerText = C2x;
                     document.getElementById("step5-C2y").innerText = C2y;
                     document.getElementById("step5-s").innerText = s;
-                    document.getElementById("step5-M").innerText = data.decrypted_message;
-                    document.getElementById("step5-M2").innerText = data.decrypted_message;
+                    document.getElementById("step5-M").innerText = hm;
+                    document.getElementById("step5-M2").innerText = hm;
                 })
                 .catch(error => console.error('Error:', error));
             });

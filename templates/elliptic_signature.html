@@ -316,7 +316,7 @@
                                 <div class="card-body">
                                     <p class="card-text">Alice sends the message to Bob.</p>
                                     <!-- conect here: id="signature2" -->
-                                    <p class="card-text">Sender: <span id="signature2">Alice</span></p>
+                                    <p class="card-text">Sender: Alice</p>
                                     <!-- connect here: id="message2" -->
                                     <p class="card-text">Message: <span id="message22">Hello Bob</span></p>
                                     <!-- connect here: id="hashed_signature2" -->
@@ -359,8 +359,9 @@
             </div>
         </footer>
         <script>
+
             document.querySelector("#system1_setting").addEventListener("submit", async function (e) {
-                e.preventDefault(); // Ngăn chặn reload trang
+                e.preventDefault();  // Ngăn chặn reload trang
             
                 // Lấy giá trị từ form
                 const p = parseInt(document.querySelector("#p1").value);
@@ -371,41 +372,90 @@
                 const d = parseInt(document.querySelector("#privateKey1").value);
                 const message = document.querySelector("#message1").value;
             
-                // Tạo request payload
-                const payload = {
-                    p, a, b, Gx, Gy, d, message
-                };
+                const payload = { p, a, b, x: Gx, y: Gy, d };
             
                 try {
-                    // Gửi POST request đến API
-                    const response = await fetch('/sign_elip', {
+                    // Gửi yêu cầu kiểm tra điều kiện của đường cong
+                    const curveResponse = await fetch('/check_condition', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(payload),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b }),
                     });
             
-                    // Nhận phản hồi JSON từ server
-                    const result = await response.json();
+                    const curveResult = await curveResponse.json();
+                    if (!curveResult.valid) {
+                        alert("Điều kiện của đường cong không hợp lệ!");
+                        return;  // Nếu đường cong không hợp lệ thì dừng lại
+                    }
             
-                    // Hiển thị dữ liệu trên giao diện
-                    document.getElementById("#message12").innerHTML = message;
-                    document.querySelector("#signature1").textContent = JSON.stringify(result.signature);
-                    document.querySelector("#encrypted_message1").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
-                    document.querySelector("#Bob_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
-                    document.querySelector("#Bob_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
-                    document.querySelector("#decrypted_message1").textContent = JSON.stringify(result.decrypted_message);
-                    document.querySelector("#signature_authentication1").textContent = result.v ? "Valid" : "Invalid";
+                    // Gửi yêu cầu kiểm tra điểm G
+                    const checkGResponse = await fetch('/check_G', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b, x: Gx, y: Gy }),
+                    });
+            
+                    const checkGResult = await checkGResponse.json();
+                    if (!checkGResult.status) {
+                        alert("Điểm G không thuộc đường cong!");
+                        return;  // Nếu điểm G không hợp lệ thì dừng lại
+                    }
+            
+                    // Kiểm tra khóa riêng d
+                    const orderResponse = await fetch('/caculate_order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b, x: Gx, y: Gy }),
+                    });
+            
+                    const orderResult = await orderResponse.json();
+                    const order = orderResult.order;
+            
+                    if (d < 1 || d >= order) {
+                        alert("Khóa riêng không hợp lệ! Phải nằm trong khoảng [1, n-1] với n là bậc của điểm G.");
+                        return;  // Nếu khóa riêng không hợp lệ thì dừng lại
+                    }
+            
+                    // Tạo payload và gửi yêu cầu ký
+                    const signPayload = { p, a, b, Gx, Gy, d, message };
+            
+                    try {
+                        // Gửi POST request đến API
+                        const response = await fetch('/sign_elip', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(signPayload),
+                        });
+            
+                        // Nhận phản hồi JSON từ server
+                        const result = await response.json();
+            
+                        // Hiển thị dữ liệu trên giao diện
+                        document.getElementById("message12").innerHTML = message;                        
+                        document.querySelector("#signature1").textContent = JSON.stringify(result.signature);
+                        document.querySelector("#encrypted_message1").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
+                        document.querySelector("#Bob_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
+                        document.querySelector("#Bob_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
+                        document.querySelector("#decrypted_message1").textContent = JSON.stringify(result.decrypted_message);
+                        document.querySelector("#signature_authentication1").textContent = result.v ? "Valid" : "Invalid";
+            
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("Có lỗi xảy ra khi xử lý yêu cầu.");
+                    }
             
                 } catch (error) {
                     console.error("Error:", error);
-                    alert("An error occurred while processing the request.");
+                    alert("Có lỗi xảy ra khi xử lý yêu cầu.");
                 }
             });
+            
+        
 
             document.querySelector("#system2_setting").addEventListener("submit", async function (e) {
-                e.preventDefault(); // Ngăn chặn reload trang
+                e.preventDefault();  // Ngăn chặn reload trang
             
                 // Lấy giá trị từ form
                 const p = parseInt(document.querySelector("#p2").value);
@@ -416,39 +466,87 @@
                 const d = parseInt(document.querySelector("#privateKey2").value);
                 const message = document.querySelector("#message2").value;
             
-                // Tạo request payload
-                const payload = {
-                    p, a, b, Gx, Gy, d, message
-                };
+                const payload = { p, a, b, x: Gx, y: Gy, d };
             
                 try {
-                    // Gửi POST request đến API
-                    const response = await fetch('/sign_elip', {
+                    // Gửi yêu cầu kiểm tra điều kiện của đường cong
+                    const curveResponse = await fetch('/check_condition', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(payload),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b }),
                     });
             
-                    // Nhận phản hồi JSON từ server
-                    const result = await response.json();
+                    const curveResult = await curveResponse.json();
+                    if (!curveResult.valid) {
+                        alert("Điều kiện của đường cong không hợp lệ!");
+                        return;  // Nếu đường cong không hợp lệ thì dừng lại
+                    }
             
-                    // Hiển thị dữ liệu trên giao diện
-                    document.getElementById("#message22").innerHTML = message;
-                    document.querySelector("#signature2").textContent = JSON.stringify(result.signature);
-                    document.querySelector("#encrypted_message2").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
-                    document.querySelector("#Alice_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
-                    document.querySelector("#Alice_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
-                    document.querySelector("#decrypted_message2").textContent = JSON.stringify(result.decrypted_message);
-                    document.querySelector("#signature_authentication2").textContent = result.v ? "Valid" : "Invalid";
+                    // Gửi yêu cầu kiểm tra điểm G
+                    const checkGResponse = await fetch('/check_G', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b, x: Gx, y: Gy }),
+                    });
+            
+                    const checkGResult = await checkGResponse.json();
+                    if (!checkGResult.status) {
+                        alert("Điểm G không thuộc đường cong!");
+                        return;  // Nếu điểm G không hợp lệ thì dừng lại
+                    }
+                    // Kiểm tra khóa riêng d
+                    const orderResponse = await fetch('/caculate_order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ p, a, b, x: Gx, y: Gy }),
+                    });
+            
+                    const orderResult = await orderResponse.json();
+                    const order = orderResult.order;
+            
+                    if (d < 1 || d >= order) {
+                        alert("Khóa riêng không hợp lệ! Phải nằm trong khoảng [1, n-1] với n là bậc của điểm G.");
+                        return;  // Nếu khóa riêng không hợp lệ thì dừng lại
+                    }
+            
+                    // Tạo payload và gửi yêu cầu ký
+                    const signPayload = { p, a, b, Gx, Gy, d, message };
+            
+                    try {
+                        // Gửi POST request đến API
+                        const response = await fetch('/sign_elip', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(signPayload),
+                        });
+            
+                        // Nhận phản hồi JSON từ server
+                        const result = await response.json();
+            
+                        // Hiển thị dữ liệu trên giao diện
+                        document.getElementById("message22").innerHTML = message;
+                        document.querySelector("#signature2").textContent = JSON.stringify(result.signature);
+                        document.querySelector("#encrypted_message2").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
+                        document.querySelector("#Alice_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
+                        document.querySelector("#Alice_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
+                        document.querySelector("#decrypted_message2").textContent = JSON.stringify(result.decrypted_message);
+                        document.querySelector("#signature_authentication2").textContent = result.v ? "Valid" : "Invalid";
+            
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("Có lỗi xảy ra khi xử lý yêu cầu.");
+                    }
             
                 } catch (error) {
                     console.error("Error:", error);
-                    alert("An error occurred while processing the request.");
+                    alert("Có lỗi xảy ra khi xử lý yêu cầu.");
                 }
             });
         </script>
+
+        
     </body>
 
 </html>
