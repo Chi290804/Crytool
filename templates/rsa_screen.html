@@ -227,7 +227,7 @@
                       <label for="m" class="col-sm-2 col-form-label"><i>m</i> =</label>
                       <div class="col-sm-10">
                         <!-- connect here: id="m" -->
-                          <input type="number" class="form-control" id="m" placeholder="88" required />
+                          <input type="text" class="form-control" id="m" placeholder="88" required />
                       </div>
                   </div>
                   
@@ -278,6 +278,13 @@
 
                 <p>Numbers are converted to letters using an encoding system like <span class="highlight">ASCII</span>.</p>
                 <p>For the entered values this would be: <i>c</i> = <i>y</i> and <i>m</i> = <i>x</i> </p>  </div>
+                <form id="decrypt">
+
+                  <div class="d-flex justify-content-begin">
+                  <!-- connect here:-->
+                      <button type="submit" class="btn btn-primary">Decrypt</button>
+                  </div>
+                </form>
           </div>
         </div>
 
@@ -340,7 +347,7 @@
       const encryptForm = document.getElementById("form_encrypt");
       encryptForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const m = parseInt(document.getElementById("m").value); // Chuyển đổi m thành số nguyên
+        const m = document.getElementById("m").value; 
         const eValue = parseInt(document.getElementById("e").textContent); // Chuyển đổi e thành số nguyên
         const n = parseInt(document.getElementById("n").textContent); // Chuyển đổi n thành số nguyên
 
@@ -351,30 +358,48 @@
         });
 
         const data = await response.json();
+        document.getElementById("n1").textContent = n;
         document.getElementById("c1").textContent = data.encrypted_message;
         document.getElementById("c").textContent = data.encrypted_message;
-        document.getElementById("m1").textContent = m;
+        document.getElementById("m1").textContent = data.message_int;
         document.getElementById("e1").textContent = eValue;
-        document.getElementById("p1").textContent = p;
       });
 
       // Step 6: Decrypt
-      const decryptForm = document.getElementById("form_encrypt");
-      encryptForm.addEventListener("submit", async (e) => {
+      document.getElementById("decrypt").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const c = document.getElementById("c1").textContent;
-        const d = document.getElementById("d").textContent;
-        const n = document.getElementById("n").textContent;
-
-        const response = await fetch("/decrypt-rsa", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ encrypted_message: c, private_key: [n, d] }),
-        });
-
-        const data = await response.json();
-        document.getElementById("decrypted").textContent = data.decrypted_message;
-      });
+      
+        const c = parseInt(document.getElementById("c").textContent);
+        const d = parseInt(document.getElementById("d").textContent);
+        const n = parseInt(document.getElementById("n").textContent);
+        const m = parseInt(document.getElementById("m1").textContent);
+        // Kiểm tra xem các giá trị có hợp lệ không
+        if (isNaN(c) || isNaN(d) || isNaN(n)) {
+          alert("Dữ liệu đầu vào không hợp lệ.");
+          return;
+        }
+      
+        try {
+          const response = await fetch("/decrypt-rsa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ encrypted_message: c, d: d, n: n }),
+          });
+      
+          const data = await response.json();
+      
+          if (data.error) {
+            document.getElementById("decrypted").textContent = "Lỗi: " + data.error;
+          } else {
+            document.getElementById("decrypted").textContent = data.decrypted_message;
+            document.getElementById("c2").textContent = c;
+            document.getElementById("d2").textContent = d;
+            document.getElementById("n2").textContent = n;
+          }
+        } catch (error) {
+          document.getElementById("decrypted").textContent = "Có lỗi xảy ra!";
+        }
+      });      
     });
   </script>
 </body>

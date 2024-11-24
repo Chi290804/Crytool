@@ -270,14 +270,14 @@
                                     <!-- connect here: id="message1" -->
                                     <p class="card-text">Message: <span id="message12">Hello Alice</span></p>
                                     <!-- connect here: id="hashed_message1" -->
-                                    <p class="card-text">Hashed message: <span id="hashed_message1">?</span></p>
+                                    
                                     <!-- connect here: id="encrypted_signature1" -->
                                     <p class="card-text">Signature: <span id="signature1">?</span></p>
                                     <!-- connect here: id="encrypted_message1" -->
                                     <p class="card-text">Encrypted message: <span id="encrypted_message1">?</span></p>
-                                    <p class="card-text">Bob public key: <span id="Bob_public_key">(n, e)</span></p>
+                                    <p class="card-text">Bob public key: <span id="Bob_public_key">B = s*G</span></p>
 
-                                    <p class="card-text">Bob private key: <span id="Bob_private_key">(n, d)</span></p>
+                                    <p class="card-text">Bob private key: <span id="Bob_private_key">s</span></p>
                                 </div>
                             </div>
 
@@ -288,25 +288,10 @@
                                 <div class="card-body">
                                     <p class="card-text">Alice receives the message from Bob.</p>
                                     <!-- connect here: id="signature2" -->
-                                    <p class="card-text">Receiver: <span id="signature2">Alice</span></p>
+                                    <p class="card-text">Reciever: Alice</p>
                                     <!-- connect here: id="signature_authentication1" -->
                                     <p class="card-text">Decrypt message: <span id="decrypted_message1">?</span></p>
                                     <p class="card-text">Signature authentication: <span id="signature_authentication1">Invalid</span></p>
-                                    <p class="card-text"><ul>
-                                        <li>
-                                            <i>u₁ = <span id="h1">h</span> · <span id="w1">w</span> mod <span id="n1">n</span></i>
-                                        </li>
-                                        <li>
-                                            <i>u₂ = <span id="r1">r</span> · <span id="w1">w</span> mod <span id="n1">n</span></i>
-                                        </li>
-                                        
-                                        <li>
-                                            <i>P = <span id="u1">u₁</span> · <span id="G1">G</span> + <span id="u21">u₂</span> · <span id="Q1">Q</span></i>
-                                        </li>
-                                        <li>
-                                            Verify: <i><span id="r_check1">r</span> ≡ <span id="x21">x₂</span> mod <span id="n1">n</span></i>.
-                                        </li>
-                                     </p>
                                     <!-- connect here: id="decrypted_message1" -->
                                 </div>
                             </div>
@@ -336,15 +321,15 @@
                                     <p class="card-text">Message: <span id="message22">Hello Bob</span></p>
                                     <!-- connect here: id="hashed_signature2" -->
                                     <!-- connect here: id="hashed_message2" -->
-                                    <p class="card-text">Hashed message: <span id="hashed_message2">?</span></p>
+                                    
 
                                     <p class="card-text">Signature: <span id="signature2">?</span></p>
                                     
                                     <!-- connect here: id="encrypted_message2" -->
                                     <p class="card-text">Encrypted message: <span id="encrypted_message2">?</span></p>
-                                    <p class="card-text">Alice public key: <span id="Alice_public_key">(n, e)</span></p>
+                                    <p class="card-text">Alice public key: <span id="Alice_public_key">B = s*G</span></p>
 
-                                    <p class="card-text">Alice private key: <span id="Alice_private_key">(n, d)</span></p>
+                                    <p class="card-text">Alice private key: <span id="Alice_private_key">s = </span></p>
                                 </div>
                             </div>
 
@@ -355,25 +340,11 @@
                                 <div class="card-body">
                                     <p class="card-text">Bob receives the message from Alice.</p>
                                     <!-- connect here: id="signature1" -->
-                                    <p class="card-text">Receiver: <span id="signature1">Bob</span></p>
+                                    <p class="card-text">Receiver: Bob</p>
                                     <!-- connect here: id="signature_authentication2" -->
                                     <p class="card-text">Decrypt message: <span id="decrypted_message2">?</span></p>
                                     <p class="card-text">Signature authentication: <span id="signature_authentication2">Invalid</span></p>
-                                    <p class="card-text"><ul>
-                                        <li>
-                                            <i>u₁ = <span id="h2">h(M)</span> · <span id="w2">w</span> mod <span id="n2">n</span></i>
-                                        </li>
-                                        <li>
-                                            <i>u₂ = <span id="r2">r</span> · <span id="w2">w</span> mod <span id="n2">n</span></i>
-                                        </li>
-                                        
-                                        <li>
-                                            <i>P = <span id="u12">u₁</span> · <span id="G2">G</span> + <span id="u22">u₂</span> · <span id="Q2">Q</span></i>
-                                        </li>
-                                        <li>
-                                            Verify: <i><span id="r_check2">r</span> ≡ <span id="x22">x₂</span> mod <span id="n2">n</span></i>.
-                                        </li>
-                                     </p>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -419,17 +390,58 @@
                     const result = await response.json();
             
                     // Hiển thị dữ liệu trên giao diện
-                    document.querySelector("#hashed_message1").textContent = result.hashed_message;
+                    document.getElementById("#message12").innerHTML = message;
                     document.querySelector("#signature1").textContent = JSON.stringify(result.signature);
-                    document.querySelector("#encrypted_message1").textContent = `${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)}`;
-                    document.querySelector("#Bob_public_key").textContent = JSON.stringify(result.public_key);
-                    document.querySelector("#Bob_private_key").textContent = JSON.stringify(result.private_key);
+                    document.querySelector("#encrypted_message1").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
+                    document.querySelector("#Bob_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
+                    document.querySelector("#Bob_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
                     document.querySelector("#decrypted_message1").textContent = JSON.stringify(result.decrypted_message);
-                    document.querySelector("#h1").textContent = result.u1;
-                    document.querySelector("#w1").textContent = result.u2;
-                    document.querySelector("#n1").textContent = result.n1;
-                    document.querySelector("#u1").textContent = JSON.stringify(result.P);
                     document.querySelector("#signature_authentication1").textContent = result.v ? "Valid" : "Invalid";
+            
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while processing the request.");
+                }
+            });
+
+            document.querySelector("#system2_setting").addEventListener("submit", async function (e) {
+                e.preventDefault(); // Ngăn chặn reload trang
+            
+                // Lấy giá trị từ form
+                const p = parseInt(document.querySelector("#p2").value);
+                const a = parseInt(document.querySelector("#a2").value);
+                const b = parseInt(document.querySelector("#b2").value);
+                const Gx = parseInt(document.querySelector("#Gx2").value);
+                const Gy = parseInt(document.querySelector("#Gy2").value);
+                const d = parseInt(document.querySelector("#privateKey2").value);
+                const message = document.querySelector("#message2").value;
+            
+                // Tạo request payload
+                const payload = {
+                    p, a, b, Gx, Gy, d, message
+                };
+            
+                try {
+                    // Gửi POST request đến API
+                    const response = await fetch('/sign_elip', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+            
+                    // Nhận phản hồi JSON từ server
+                    const result = await response.json();
+            
+                    // Hiển thị dữ liệu trên giao diện
+                    document.getElementById("#message22").innerHTML = message;
+                    document.querySelector("#signature2").textContent = JSON.stringify(result.signature);
+                    document.querySelector("#encrypted_message2").textContent = `(${JSON.stringify(result.C1)}, ${JSON.stringify(result.C2)})`;
+                    document.querySelector("#Alice_public_key").textContent = `B = ${JSON.stringify(result.public_key)}`;
+                    document.querySelector("#Alice_private_key").textContent = `s = ${JSON.stringify(result.private_key)}`;
+                    document.querySelector("#decrypted_message2").textContent = JSON.stringify(result.decrypted_message);
+                    document.querySelector("#signature_authentication2").textContent = result.v ? "Valid" : "Invalid";
             
                 } catch (error) {
                     console.error("Error:", error);

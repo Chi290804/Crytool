@@ -79,26 +79,35 @@ def encrypt():
     # Đảm bảo message không null
     if message is None:
         return jsonify({"error": "Message is required"}), 400
-
+    message_int = rsa_backend.hashing(message)
     public_key = tuple(data.get('public_key'))
     
     # Gọi hàm mã hóa
     try:
-        encrypted_message = rsa_backend.encrypt_message(message, public_key)
+        encrypted_message = rsa_backend.encrypt_message(message_int, public_key)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-    return jsonify({'encrypted_message': encrypted_message})
+    return jsonify({'encrypted_message': encrypted_message, 'message_int': message_int})
 
 
 @app.route('/decrypt-rsa', methods=['POST'])
 def decrypt():
     data = request.json
-    encrypted_message = int(data['encrypted_message'])
-    private_key = tuple(data['private_key'])
+    encrypted_message = data.get('encrypted_message')
+    d = data.get('d')
+    n = data.get('n')
+
+    # Kiểm tra dữ liệu đầu vào
+    if not encrypted_message or not n or not d:
+        return jsonify({"error": "Missing data"}), 400
     
-    decrypted_message = rsa_backend.decrypt_message(encrypted_message, private_key)
-    return jsonify({'decrypted_message': decrypted_message})
+    try:
+        decrypted_message = rsa_backend.decrypt_message(int(encrypted_message), (int(n), int(d)))
+        return jsonify({'decrypted_message': decrypted_message})
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
 
 @app.route('/sign-rsa', methods=['POST'])
 def sign():
@@ -488,7 +497,7 @@ def sign_elip():
     Gx = data.get('Gx')
     Gy = data.get('Gy')
     d = data.get('d')  # Khóa riêng
-    G = (Gx, Gy)  # Điểm G
+    G = [Gx, Gy]  # Điểm G
 
     # Tính toán order của điểm G
     n = elliptic_backend.calculate_order_of_point(a, b, p, G)
@@ -504,7 +513,7 @@ def sign_elip():
     C1, C2 = elliptic_backend.encrypt_message(a, b, p, G, n, message, k)
 
     # Lấy khóa công khai và riêng tư (giả sử đã triển khai hàm này)
-    public_key, private_key = elliptic_backend.generate_keys(a, b, p, G, n, d)
+    private_key, public_key  = elliptic_backend.generate_keys(a, b, p, G, n, d)
 
     # Giải mã thông điệp để kiểm tra
     decrypted_message = elliptic_backend.decrypt_message(a, b, p, G, n, (C1, C2), d)

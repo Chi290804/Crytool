@@ -1,5 +1,11 @@
 # %%
+import hashlib
 import math
+
+def hash_message(message):
+      # Băm thông điệp bằng SHA-256
+    hash_object = hashlib.sha256(message.encode())
+    return int.from_bytes(hash_object.digest(), 'big')
 def hashing(txt):
     
     # txt = txt.upper()
@@ -232,7 +238,7 @@ def generate_keys(a, b, p, G, n, s):
     curve = EllipticCurve(a, b, p)
     ecc = EllipticCurveCryptography(curve, G, n)
     private_key = ecc.get_private_key(s)
-    public_key = ecc.get_B()
+    public_key = curve.multiply_point(G, s)
     # public_key = ecc.get_public_key()
     return private_key, public_key
 
@@ -313,39 +319,70 @@ def verify_signature(a, b, p, G, n, message, h, signature, B):
     # Kiểm tra chữ ký hợp lệ nếu r ≡ P.x mod n
     return (P[0] % n == r), w, u1, u2, P
 
-# Thông số đường cong
-a, b, p = 1, 6, 11
-G = (3, 5)
-message = "HELLO"
+# def sign_elip(p, a, b, message, Gx, Gy, d):
+#     # Điểm G trên đường cong elliptic
+#     G = (Gx, Gy)
 
-# 1. Kiểm tra điều kiện
-print("Điều kiện hợp lệ:", check_curve_conditions(a, b, p))
+#     # Tính toán order của điểm G
+#     n = calculate_order_of_point(a, b, p, G)
+#     print(f"Order of point G: {n}")
 
-# 2. Lấy điểm trên đường cong
-print("Các điểm trên đường cong:", get_points_on_curve(a, b, p))
+#     # Băm thông điệp
+#     hashed_message = hash_message(message)
+#     print(f"Hashed message: {hashed_message}")
 
-# 3. Kiểm tra điểm G
-print("G có thuộc đường cong không:", is_point_valid(a, b, p, G))
+#     # Tạo chữ ký số (giả sử k = 2, nhưng thực tế nên là số ngẫu nhiên an toàn)
+#     k = 2
+#     signature = sign_message(a, b, p, G, n, hashed_message, k, d)
+#     print(f"Signature: {signature}")
 
-# 4. Lấy điểm ngẫu nhiên
-random_point = get_random_point_on_curve(a, b, p)
-print("Điểm ngẫu nhiên trên đường cong:", random_point)
+#     # Mã hóa thông điệp
+#     C1, C2 = encrypt_message(a, b, p, G, n, message, k)
+#     print(f"Encrypted message (C1, C2): {C1}, {C2}")
 
-# 5. Tính bậc của điểm G
-n = calculate_order_of_point(a, b, p, G)
-print("Bậc của G:", n)
+#     # Tạo khóa công khai và khóa riêng tư
+#     private_key, public_key = generate_keys(a, b, p, G, n, d)
+#     print(f"Public Key: {public_key}")
+#     print(f"Private Key: {private_key}")
 
-# 6. Tạo khóa
-private_key, public_key = generate_keys(a, b, p, G, n, s = 1811)
-print("Khóa bí mật:", private_key)
-print("Khóa công khai:", public_key)
+#     # Giải mã thông điệp
+#     decrypted_message = decrypt_message(a, b, p, G, n, (C1, C2), d)
+#     print(f"Decrypted message: {decrypted_message}")
 
-# 7. Mã hóa và giải mã tin nhắn
-poi = map_message_to_curve(a, b, p, message)
-print("M:", poi)
+#     # Xác thực chữ ký
+#     v, w, u1, u2, P = verify_signature(
+#         a, b, p, G, n, message, hashed_message, signature, public_key
+#     )
+#     print(f"Signature verification: {'Valid' if v else 'Invalid'}")
 
-encrypted_message = encrypt_message(a, b, p, G, n, message, k = 2)
-print("Tin nhắn đã mã hóa:", encrypted_message)
+#     # Trả về kết quả
+#     return {
+#         "hashed_message": hashed_message,
+#         "signature": signature,
+#         "C1": C1,
+#         "C2": C2,
+#         "public_key": public_key,
+#         "private_key": private_key,
+#         "decrypted_message": decrypted_message,
+#         "n": n,
+#         "v": v,
+#         "w": w,
+#         "u1": u1,
+#         "u2": u2,
+#         "P": P
+#     }
 
-decrypted_point = decrypt_message(a, b, p, G, n, encrypted_message, s = 1811)
-print("Tin nhắn đã giải mã:", decrypted_point)
+# # Thực thi hàm `main`
+# if __name__ == "__main__":
+#     # Dữ liệu kiểm thử (thay đổi các giá trị này để kiểm tra với các bộ dữ liệu khác nhau)
+#     p = 11          # Prime modulus
+#     a = 1            # Tham số a của đường cong elliptic
+#     b = 6           # Tham số b của đường cong elliptic
+#     Gx, Gy = 2, 7    # Điểm cơ sở G trên đường cong
+#     d = 2            # Khóa riêng tư
+#     message = "Hello Alice"  # Thông điệp cần ký và mã hóa
+
+#     # Gọi hàm và in kết quả
+#     result = sign_elip(p, a, b, message, Gx, Gy, d)
+#     for key, value in result.items():
+#         print(f"{key}: {value}")
