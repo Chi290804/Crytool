@@ -25,7 +25,3 @@ Sau đó truy cập đường link: http://127.0.0.1:5000
 Hoàng Kim Chi - 22028046
 
 Nguyễn Hữu Thế - 22028155
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
